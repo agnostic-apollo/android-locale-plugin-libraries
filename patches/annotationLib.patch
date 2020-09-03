@@ -1,0 +1,17 @@
+diff --git a/repos/android-annotation-master/annotationLib/src/main/java/com/twofortyfouram/annotation/Slow.java b/android-locale-plugin-libraries/android-locale-plugin-libraries/annotationLib/src/main/java/com/twofortyfouram/annotation/Slow.java
+index 9f9a451..6f6d529 100755
+--- a/repos/android-annotation-master/annotationLib/src/main/java/com/twofortyfouram/annotation/Slow.java
++++ b/android-locale-plugin-libraries/android-locale-plugin-libraries/annotationLib/src/main/java/com/twofortyfouram/annotation/Slow.java
+@@ -28,11 +28,11 @@ import java.lang.annotation.RetentionPolicy;
+ public @interface Slow {
+ 
+     /**
+      * Documents how slow the operation is likely to be.
+      */
+-    public static enum Speed {
++    enum Speed {
+         /**
+          * The operation may take up to a few hundred milliseconds. The operation
+          * shouldn't occur on the UI thread, however this operation is also
+          * unlikely to take long enough to cause an Android Not Responding
+          * dialog. For example, the operation may be a quick disk read or write.

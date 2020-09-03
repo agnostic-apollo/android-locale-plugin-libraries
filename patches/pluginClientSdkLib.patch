@@ -1,0 +1,716 @@
+diff --git a/repos/android-plugin-client-sdk-for-locale-master/pluginClientSdkLib/src/androidTest/java/com/twofortyfouram/locale/sdk/client/internal/HostPackageUtilTest.java b/android-locale-plugin-libraries/android-locale-plugin-libraries/pluginClientSdkLib/src/androidTest/java/com/twofortyfouram/locale/sdk/client/internal/HostPackageUtilTest.java
+index 096ba91..0621c0a 100755
+--- a/repos/android-plugin-client-sdk-for-locale-master/pluginClientSdkLib/src/androidTest/java/com/twofortyfouram/locale/sdk/client/internal/HostPackageUtilTest.java
++++ b/android-locale-plugin-libraries/android-locale-plugin-libraries/pluginClientSdkLib/src/androidTest/java/com/twofortyfouram/locale/sdk/client/internal/HostPackageUtilTest.java
+@@ -14,11 +14,14 @@
+  */
+ 
+ package com.twofortyfouram.locale.sdk.client.internal;
+ 
+ import android.content.pm.PackageInfo;
+-import android.support.annotation.NonNull;
++
++import androidx.test.filters.SmallTest;
++import androidx.annotation.NonNull;
++
+ import android.test.AndroidTestCase;
+ import android.test.mock.MockPackageManager;
+ import android.test.suitebuilder.annotation.SmallTest;
+ 
+ import com.twofortyfouram.locale.sdk.client.internal.HostPackageUtil;
+diff --git a/repos/android-plugin-client-sdk-for-locale-master/pluginClientSdkLib/src/androidTest/java/com/twofortyfouram/locale/sdk/client/ui/activity/PluginType.java b/android-locale-plugin-libraries/android-locale-plugin-libraries/pluginClientSdkLib/src/androidTest/java/com/twofortyfouram/locale/sdk/client/ui/activity/PluginType.java
+index e1debb6..3a61a5b 100755
+--- a/repos/android-plugin-client-sdk-for-locale-master/pluginClientSdkLib/src/androidTest/java/com/twofortyfouram/locale/sdk/client/ui/activity/PluginType.java
++++ b/android-locale-plugin-libraries/android-locale-plugin-libraries/pluginClientSdkLib/src/androidTest/java/com/twofortyfouram/locale/sdk/client/ui/activity/PluginType.java
+@@ -36,11 +36,11 @@ public enum PluginType {
+     private final String mActivityIntentAction;
+ 
+     @NonNull
+     private final String mReceiverIntentAction;
+ 
+-    private PluginType(@NonNull final String activityIntentAction,
++    PluginType(@NonNull final String activityIntentAction,
+                        @NonNull final String receiverIntentAction) {
+         assertNotEmpty(activityIntentAction, "activityIntentAction"); //$NON-NLS-1$
+         assertNotEmpty(receiverIntentAction, "receiverIntentAction"); //$NON-NLS-1$
+ 
+         mActivityIntentAction = activityIntentAction;
+diff --git a/repos/android-plugin-client-sdk-for-locale-master/pluginClientSdkLib/src/main/java/com/twofortyfouram/locale/sdk/client/internal/HostPackageUtil.java b/android-locale-plugin-libraries/android-locale-plugin-libraries/pluginClientSdkLib/src/main/java/com/twofortyfouram/locale/sdk/client/internal/HostPackageUtil.java
+index 9f70830..d9a7d88 100755
+--- a/repos/android-plugin-client-sdk-for-locale-master/pluginClientSdkLib/src/main/java/com/twofortyfouram/locale/sdk/client/internal/HostPackageUtil.java
++++ b/android-locale-plugin-libraries/android-locale-plugin-libraries/pluginClientSdkLib/src/main/java/com/twofortyfouram/locale/sdk/client/internal/HostPackageUtil.java
+@@ -15,15 +15,16 @@
+ 
+ package com.twofortyfouram.locale.sdk.client.internal;
+ 
+ import android.content.pm.PackageInfo;
+ import android.content.pm.PackageManager;
+-import android.support.annotation.NonNull;
+-import android.support.annotation.Nullable;
+ 
++import androidx.annotation.NonNull;
++import androidx.annotation.Nullable;
+ import net.jcip.annotations.ThreadSafe;
+ 
++
+ import java.util.Collections;
+ import java.util.HashSet;
+ import java.util.LinkedHashSet;
+ import java.util.List;
+ import java.util.Set;
+diff --git a/repos/android-plugin-client-sdk-for-locale-master/pluginClientSdkLib/src/main/java/com/twofortyfouram/locale/sdk/client/internal/PluginActivityDelegate.java b/android-locale-plugin-libraries/android-locale-plugin-libraries/pluginClientSdkLib/src/main/java/com/twofortyfouram/locale/sdk/client/internal/PluginActivityDelegate.java
+index bd5da1b..5c4589e 100755
+--- a/repos/android-plugin-client-sdk-for-locale-master/pluginClientSdkLib/src/main/java/com/twofortyfouram/locale/sdk/client/internal/PluginActivityDelegate.java
++++ b/android-locale-plugin-libraries/android-locale-plugin-libraries/pluginClientSdkLib/src/main/java/com/twofortyfouram/locale/sdk/client/internal/PluginActivityDelegate.java
+@@ -1,12 +1,13 @@
+ package com.twofortyfouram.locale.sdk.client.internal;
+ 
+ import android.app.Activity;
+ import android.content.Intent;
+ import android.os.Bundle;
+-import android.support.annotation.NonNull;
+-import android.support.annotation.Nullable;
++
++import androidx.annotation.NonNull;
++import androidx.annotation.Nullable;
+ 
+ import com.twofortyfouram.assertion.BundleAssertions;
+ import com.twofortyfouram.locale.sdk.client.ui.activity.IPluginActivity;
+ import com.twofortyfouram.log.Lumberjack;
+ import com.twofortyfouram.spackle.bundle.BundleComparer;
+@@ -88,11 +89,11 @@ public final class PluginActivityDelegate<T extends Activity & IPluginActivity>
+                     final String blurb = activity.getResultBlurb(resultBundle);
+                     assertNotNull(blurb, "blurb"); //$NON-NLS-1$
+ 
+                     if (!BundleComparer.areBundlesEqual(resultBundle, activity.getPreviousBundle())
+                             || !blurb.equals(activity.getPreviousBlurb())) {
+-                        final Intent resultIntent = new Intent();
++                        final Intent resultIntent = activity.getResultIntent();
+                         resultIntent.putExtra(com.twofortyfouram.locale.api.Intent.EXTRA_BUNDLE,
+                                 resultBundle);
+                         resultIntent.putExtra(
+                                 com.twofortyfouram.locale.api.Intent.EXTRA_STRING_BLURB,
+                                 blurb);
+diff --git a/repos/android-plugin-client-sdk-for-locale-master/pluginClientSdkLib/src/main/java/com/twofortyfouram/locale/sdk/client/receiver/AbstractAsyncReceiver.java b/android-locale-plugin-libraries/android-locale-plugin-libraries/pluginClientSdkLib/src/main/java/com/twofortyfouram/locale/sdk/client/receiver/AbstractAsyncReceiver.java
+index 6df4c3d..bc01fad 100755
+--- a/repos/android-plugin-client-sdk-for-locale-master/pluginClientSdkLib/src/main/java/com/twofortyfouram/locale/sdk/client/receiver/AbstractAsyncReceiver.java
++++ b/android-locale-plugin-libraries/android-locale-plugin-libraries/pluginClientSdkLib/src/main/java/com/twofortyfouram/locale/sdk/client/receiver/AbstractAsyncReceiver.java
+@@ -20,13 +20,14 @@ import android.content.BroadcastReceiver;
+ import android.os.Build.VERSION_CODES;
+ import android.os.Handler;
+ import android.os.HandlerThread;
+ import android.os.Looper;
+ import android.os.Message;
+-import android.support.annotation.NonNull;
+ import android.util.Pair;
+ 
++import androidx.annotation.NonNull;
++
+ import com.twofortyfouram.spackle.AndroidSdkVersion;
+ import com.twofortyfouram.spackle.ThreadUtil;
+ import com.twofortyfouram.spackle.ThreadUtil.ThreadPriority;
+ 
+ import net.jcip.annotations.ThreadSafe;
+@@ -136,13 +137,13 @@ import static com.twofortyfouram.assertion.Assertions.assertNotNull;
+         private static void quitJellybeanMr2() {
+             Looper.myLooper().quitSafely();
+         }
+     }
+ 
+-    /* package */static interface AsyncCallback {
++    /* package */ interface AsyncCallback {
+ 
+         /**
+          * @return The result code to be set if this is an ordered broadcast.
+          */
+-        public int runAsync();
++        int runAsync();
+     }
+ }
+diff --git a/repos/android-plugin-client-sdk-for-locale-master/pluginClientSdkLib/src/main/java/com/twofortyfouram/locale/sdk/client/receiver/AbstractPluginConditionReceiver.java b/android-locale-plugin-libraries/android-locale-plugin-libraries/pluginClientSdkLib/src/main/java/com/twofortyfouram/locale/sdk/client/receiver/AbstractPluginConditionReceiver.java
+index 44a9045..9f2ce25 100755
+--- a/repos/android-plugin-client-sdk-for-locale-master/pluginClientSdkLib/src/main/java/com/twofortyfouram/locale/sdk/client/receiver/AbstractPluginConditionReceiver.java
++++ b/android-locale-plugin-libraries/android-locale-plugin-libraries/pluginClientSdkLib/src/main/java/com/twofortyfouram/locale/sdk/client/receiver/AbstractPluginConditionReceiver.java
+@@ -18,22 +18,26 @@ package com.twofortyfouram.locale.sdk.client.receiver;
+ import android.content.ComponentName;
+ import android.content.Context;
+ import android.content.Intent;
+ import android.os.Build;
+ import android.os.Bundle;
+-import android.support.annotation.IntDef;
+-import android.support.annotation.NonNull;
+ 
+-import com.twofortyfouram.annotation.VisibleForTesting;
+-import com.twofortyfouram.annotation.VisibleForTesting.Visibility;
++import androidx.annotation.NonNull;
++import androidx.annotation.IntDef;
++
++
++import androidx.annotation.VisibleForTesting;
++
+ import com.twofortyfouram.log.Lumberjack;
+ import com.twofortyfouram.spackle.AndroidSdkVersion;
+ import com.twofortyfouram.spackle.bundle.BundleScrubber;
+ 
+ import java.lang.annotation.Retention;
+ import java.lang.annotation.RetentionPolicy;
+ 
++import static com.twofortyfouram.locale.api.Intent.RESULT_CONDITION_UNKNOWN;
++
+ /**
+  * <p>Abstract superclass for a plug-in condition BroadcastReceiver implementation.</p>
+  * <p>The plug-in receiver lifecycle is as follows:</p>
+  * <ol>
+  * <li>{@link #onReceive(android.content.Context, android.content.Intent)} is called by the Android
+@@ -50,13 +54,18 @@ import java.lang.annotation.RetentionPolicy;
+  * RESULT_CONDITION_UNKNOWN} and
+  * returns.  If the bundle is valid, then the lifecycle continues.</li>
+  * <li>{@link #isAsync()} is called to determine whether the remaining work should be performed on
+  * a
+  * background thread.</li>
+- * <li>{@link #getPluginConditionResult(android.content.Context, android.os.Bundle)} is called to
+- * determine the plug-in's status, and the return value of this method is set as the receiver's
+- * result code.</li>
++ * <li>{@link #getPluginConditionResult(Context, Intent, Bundle)} and
++ * {@link #getPluginConditionResult(Context, Bundle)} is called to
++ * determine the plug-in's status, and the return value of the
++ *  method is set as the receiver's result code. To maintain support
++ *  of existing implementations the partially abstract implementation
++ *  of the function {@link #getPluginConditionResult(Context, Intent, Bundle)}
++ *  only calls {@link #getPluginConditionResult(Context, Bundle)}. Only one of
++ *  the function should be overriden by the client.</li>
+  * </ol>
+  * <p>
+  * Implementations of this BroadcastReceiver must be registered in the Android
+  * Manifest with an Intent filter for
+  * {@link com.twofortyfouram.locale.api.Intent#ACTION_QUERY_CONDITION ACTION_QUERY_CONDITION}. The
+@@ -86,22 +95,22 @@ public abstract class AbstractPluginConditionReceiver extends AbstractAsyncRecei
+         if (!com.twofortyfouram.locale.api.Intent.ACTION_QUERY_CONDITION.equals(intent
+                 .getAction())) {
+             Lumberjack
+                     .e("Intent action is not %s",
+                             com.twofortyfouram.locale.api.Intent.ACTION_QUERY_CONDITION); //$NON-NLS-1$
+-            setResultCode(com.twofortyfouram.locale.api.Intent.RESULT_CONDITION_UNKNOWN);
++            setResultCode(RESULT_CONDITION_UNKNOWN);
+             return;
+         }
+         /*
+          * Ignore implicit intents, because they are not valid. It would be
+          * meaningless if ALL plug-in condition BroadcastReceivers installed
+          * were asked to handle queries not intended for them.
+          */
+         if (!new ComponentName(context, this.getClass().getName()).equals(intent
+                 .getComponent())) {
+             Lumberjack.e("Intent is not explicit"); //$NON-NLS-1$
+-            setResultCode(com.twofortyfouram.locale.api.Intent.RESULT_CONDITION_UNKNOWN);
++            setResultCode(RESULT_CONDITION_UNKNOWN);
+             abortBroadcast();
+             return;
+         }
+ 
+         final Bundle bundle = intent
+@@ -111,63 +120,66 @@ public abstract class AbstractPluginConditionReceiver extends AbstractAsyncRecei
+         }
+ 
+         if (null == bundle) {
+             Lumberjack.e("%s is missing",
+                     com.twofortyfouram.locale.api.Intent.EXTRA_BUNDLE); //$NON-NLS-1$
+-            setResultCode(com.twofortyfouram.locale.api.Intent.RESULT_CONDITION_UNKNOWN);
++            setResultCode(RESULT_CONDITION_UNKNOWN);
+             return;
+         }
+ 
+         if (!isBundleValid(bundle)) {
+             Lumberjack.e("%s is invalid",
+                     com.twofortyfouram.locale.api.Intent.EXTRA_BUNDLE); //$NON-NLS-1$
+-            setResultCode(com.twofortyfouram.locale.api.Intent.RESULT_CONDITION_UNKNOWN);
++            setResultCode(RESULT_CONDITION_UNKNOWN);
+             return;
+         }
+ 
+         if (isAsync() && AndroidSdkVersion.isAtLeastSdk(Build.VERSION_CODES.HONEYCOMB)) {
+             final AsyncCallback callback = new AsyncCallback() {
+                 @NonNull
+                 private final Context mContext = context;
+ 
+                 @NonNull
++                private final Intent mIntent = intent;
++
++                @NonNull
+                 private final Bundle mBundle = bundle;
+ 
+                 @Override
+                 public int runAsync() {
+-                    final int pluginResult = getPluginConditionResult(mContext, mBundle);
++                    final int pluginResult = getPluginConditionResult(mContext, mIntent, mBundle);
+                     assertResult(pluginResult);
+                     return pluginResult;
+                 }
+ 
+             };
+ 
+             goAsyncWithCallback(callback, isOrderedBroadcast());
+         } else {
+-            final int pluginState = getPluginConditionResult(context, bundle);
++            final int pluginState = getPluginConditionResult(context, intent, bundle);
+             assertResult(pluginState);
+             setResultCode(pluginState);
+         }
+     }
+ 
+     /**
+      * @param result One of the acceptable plug-in result codes.
+      * @throws AssertionError if {@code result} is not one of the three
+      *                        acceptable values.
+      */
+-    @VisibleForTesting(Visibility.PRIVATE)
++    @VisibleForTesting(otherwise = VisibleForTesting.PROTECTED)
+     /* package */ static void assertResult(final int result) {
+         if (com.twofortyfouram.locale.api.Intent.RESULT_CONDITION_SATISFIED != result
+                 && com.twofortyfouram.locale.api.Intent.RESULT_CONDITION_UNSATISFIED != result
+-                && com.twofortyfouram.locale.api.Intent.RESULT_CONDITION_UNKNOWN != result) {
++                && RESULT_CONDITION_UNKNOWN != result) {
+             throw new AssertionError(
+                     Lumberjack
+                             .formatMessage(
+                                     "result=%d is not one of [%d, %d, %d]", result, //$NON-NLS-1$
+                                     com.twofortyfouram.locale.api.Intent.RESULT_CONDITION_SATISFIED,
+                                     com.twofortyfouram.locale.api.Intent.RESULT_CONDITION_UNSATISFIED,
+-                                    com.twofortyfouram.locale.api.Intent.RESULT_CONDITION_UNKNOWN)
++                                    RESULT_CONDITION_UNKNOWN)
+             );
+         }
+     }
+ 
+     /**
+@@ -186,10 +198,11 @@ public abstract class AbstractPluginConditionReceiver extends AbstractAsyncRecei
+     protected abstract boolean isBundleValid(@NonNull final Bundle bundle);
+ 
+     /**
+      * Configures the receiver whether it should process the Intent in a
+      * background thread. Plug-ins should return true if their
++     * {@link #getPluginConditionResult(Context, Intent, Bundle)} or
+      * {@link #getPluginConditionResult(Context, Bundle)} method performs any
+      * sort of disk IO (ContentProvider query, reading SharedPreferences, etc.).
+      * or other work that may be slow.
+      * <p>
+      * Asynchronous BroadcastReceivers are not supported prior to Honeycomb, so
+@@ -207,11 +220,48 @@ public abstract class AbstractPluginConditionReceiver extends AbstractAsyncRecei
+      *
+      * If {@link #isAsync()} returns true, this method will be called on a
+      * background thread. If {@link #isAsync()} returns false, this method will
+      * be called on the main thread. Regardless of which thread this method is
+      * called on, this method MUST return within 10 seconds per the requirements
+-     * for BroadcastReceivers.
++     * for BroadcastReceivers. Either override this method or
++     * {@link #getPluginConditionResult(Context, Bundle)}.
++     * Do not override both or call super of this method.
++     *
++     * @param context BroadcastReceiver context.
++     * @param intent The intent received by the BroadcastReceiver from the host.
++     * @param bundle The plug-in's Bundle previously returned by the edit
++     *               Activity.
++     * @return One of the Locale plug-in query results:
++     * {@link com.twofortyfouram.locale.api.Intent#RESULT_CONDITION_SATISFIED
++     * RESULT_CONDITION_SATISFIED}
++     * ,
++     * {@link com.twofortyfouram.locale.api.Intent#RESULT_CONDITION_UNSATISFIED
++     * RESULT_CONDITION_UNSATISFIED}
++     * , or
++     * {@link com.twofortyfouram.locale.api.Intent#RESULT_CONDITION_UNKNOWN
++     * RESULT_CONDITION_UNKNOWN}
++     * . If {@code bundle} is invalid, implementations must return
++     * {@link com.twofortyfouram.locale.api.Intent#RESULT_CONDITION_UNKNOWN
++     * RESULT_CONDITION_UNKNOWN}
++     */
++    @ConditionResult
++    protected int getPluginConditionResult(@NonNull final Context context,
++                                                @NonNull final Intent intent,
++                                                @NonNull final Bundle bundle) {
++        return getPluginConditionResult(context, bundle);
++    }
++
++    /**
++     * Determines the state of the plug-in.
++     *
++     * If {@link #isAsync()} returns true, this method will be called on a
++     * background thread. If {@link #isAsync()} returns false, this method will
++     * be called on the main thread. Regardless of which thread this method is
++     * called on, this method MUST return within 10 seconds per the requirements
++     * for BroadcastReceivers.  Either override this method or
++     * {@link #getPluginConditionResult(Context, Intent, Bundle)}.
++     * Do not override both.
+      *
+      * @param context BroadcastReceiver context.
+      * @param bundle The plug-in's Bundle previously returned by the edit
+      *               Activity.
+      * @return One of the Locale plug-in query results:
+@@ -226,15 +276,16 @@ public abstract class AbstractPluginConditionReceiver extends AbstractAsyncRecei
+      * . If {@code bundle} is invalid, implementations must return
+      * {@link com.twofortyfouram.locale.api.Intent#RESULT_CONDITION_UNKNOWN
+      * RESULT_CONDITION_UNKNOWN}
+      */
+     @ConditionResult
+-    protected abstract int getPluginConditionResult(@NonNull final Context context,
+-                                                    @NonNull final Bundle bundle);
++    protected int getPluginConditionResult(@NonNull final Context context,
++                                                    @NonNull final Bundle bundle) {
++        return RESULT_CONDITION_UNKNOWN;
++    }
+ 
+-    @IntDef({com.twofortyfouram.locale.api.Intent.RESULT_CONDITION_SATISFIED, com.twofortyfouram
+-            .locale.api.Intent.RESULT_CONDITION_UNKNOWN, com.twofortyfouram.locale.api.Intent
++    @IntDef({com.twofortyfouram.locale.api.Intent.RESULT_CONDITION_SATISFIED, RESULT_CONDITION_UNKNOWN, com.twofortyfouram.locale.api.Intent
+             .RESULT_CONDITION_UNSATISFIED})
+     @Retention(RetentionPolicy.SOURCE)
+     public @interface ConditionResult {
+ 
+     }
+diff --git a/repos/android-plugin-client-sdk-for-locale-master/pluginClientSdkLib/src/main/java/com/twofortyfouram/locale/sdk/client/receiver/AbstractPluginSettingReceiver.java b/android-locale-plugin-libraries/android-locale-plugin-libraries/pluginClientSdkLib/src/main/java/com/twofortyfouram/locale/sdk/client/receiver/AbstractPluginSettingReceiver.java
+index 10f90e0..072e83e 100755
+--- a/repos/android-plugin-client-sdk-for-locale-master/pluginClientSdkLib/src/main/java/com/twofortyfouram/locale/sdk/client/receiver/AbstractPluginSettingReceiver.java
++++ b/android-locale-plugin-libraries/android-locale-plugin-libraries/pluginClientSdkLib/src/main/java/com/twofortyfouram/locale/sdk/client/receiver/AbstractPluginSettingReceiver.java
+@@ -20,34 +20,40 @@ import android.app.Activity;
+ import android.content.ComponentName;
+ import android.content.Context;
+ import android.content.Intent;
+ import android.os.Build;
+ import android.os.Bundle;
+-import android.support.annotation.NonNull;
++
++import androidx.annotation.NonNull;
+ 
+ import com.twofortyfouram.log.Lumberjack;
+ import com.twofortyfouram.spackle.AndroidSdkVersion;
+ import com.twofortyfouram.spackle.bundle.BundleScrubber;
+ 
+ /**
+  * <p>Abstract superclass for a plug-in setting BroadcastReceiver implementation.</p>
+  * <p>The plug-in receiver lifecycle is as follows:</p>
+  * <ol>
+- * <li>{@link #onReceive(android.content.Context, android.content.Intent)} is called by the Android
++ * <li>{@link #onReceive(Context, Intent)} is called by the Android
+  * frameworks.
+  * onReceive() will verify that the Intent is valid.  If the Intent is invalid, the receiver
+  * returns
+  * immediately.  If the Intent appears to be valid, then the lifecycle continues.</li>
+- * <li>{@link #isBundleValid(android.os.Bundle)} is called to determine whether {@link
++ * <li>{@link #isBundleValid(Bundle)} is called to determine whether {@link
+  * com.twofortyfouram.locale.api.Intent#EXTRA_BUNDLE EXTRA_BUNDLE} is valid. If the Bundle is
+  * invalid, then the
+  * receiver returns immediately.  If the bundle is valid, then the lifecycle continues.</li>
+  * <li>{@link #isAsync()} is called to determine whether the remaining work should be performed on
+  * a
+  * background thread.</li>
+- * <li>{@link #firePluginSetting(android.content.Context, android.os.Bundle)} is called to trigger
+- * the plug-in setting's action.</li>
++ * <li>{@link #firePluginSetting(Context, Intent, Bundle)} and
++ * {@link #firePluginSetting(Context, Bundle)} are called to trigger
++ * the plug-in setting's action and should be overriden by the client.
++ * To maintain support of existing implementations the partially abstract implementation
++ *  of the function {@link #firePluginSetting(Context, Intent, Bundle)}
++ *  only calls {@link #firePluginSetting(Context, Bundle)}. Only one of
++ *  the function should be overriden by the client.</li>
+  * </ol>
+  * <p>
+  * Implementations of this BroadcastReceiver must be registered in the Android
+  * Manifest with an Intent filter for
+  * {@link com.twofortyfouram.locale.api.Intent#ACTION_FIRE_SETTING ACTION_FIRE_SETTING}. The
+@@ -119,23 +125,26 @@ public abstract class AbstractPluginSettingReceiver extends AbstractAsyncReceive
+ 
+                 @NonNull
+                 private final Context mContext = context;
+ 
+                 @NonNull
++                private final Intent mIntent = intent;
++
++                @NonNull
+                 private final Bundle mBundle = bundle;
+ 
+                 @Override
+                 public int runAsync() {
+-                    firePluginSetting(mContext, mBundle);
++                    firePluginSetting(mContext, mIntent, mBundle);
+                     return Activity.RESULT_OK;
+                 }
+ 
+             };
+ 
+             goAsyncWithCallback(callback, isOrderedBroadcast());
+         } else {
+-            firePluginSetting(context, bundle);
++            firePluginSetting(context, intent, bundle);
+         }
+     }
+ 
+     /**
+      * <p>Gives the plug-in receiver an opportunity to validate the Bundle, to
+@@ -153,12 +162,13 @@ public abstract class AbstractPluginSettingReceiver extends AbstractAsyncReceive
+     protected abstract boolean isBundleValid(@NonNull final Bundle bundle);
+ 
+     /**
+      * Configures the receiver whether it should process the Intent in a
+      * background thread. Plug-ins should return true if their
+-     * {@link #firePluginSetting(android.content.Context, android.os.Bundle)} method performs any
+-     * sort of disk IO (ContentProvider query, reading SharedPreferences, etc.).
++     * {@link #firePluginSetting(Context, Intent, Bundle)} or
++     * {@link #firePluginSetting(Context, Bundle)}
++     * method performs any sort of disk IO (ContentProvider query, reading SharedPreferences, etc.).
+      * or other work that may be slow.
+      * <p>
+      * Asynchronous BroadcastReceivers are not supported prior to Honeycomb, so
+      * with older platforms broadcasts will always be processed on the BroadcastReceiver's Looper
+      * (which for Manifest registered receivers will be the main thread).
+@@ -172,14 +182,36 @@ public abstract class AbstractPluginSettingReceiver extends AbstractAsyncReceive
+     /**
+      * If {@link #isAsync()} returns true, this method will be called on a
+      * background thread. If {@link #isAsync()} returns false, this method will
+      * be called on the main thread. Regardless of which thread this method is
+      * called on, this method MUST return within 10 seconds per the requirements
+-     * for BroadcastReceivers.
++     * for BroadcastReceivers. Either override this method or
++     * {@link #firePluginSetting(Context, Bundle)}.
++     * Do not override both or call super of this method.
+      *
+      * @param context BroadcastReceiver context.
++     * @param intent The intent received by the BroadcastReceiver from the host.
+      * @param bundle  The plug-in's Bundle previously returned by the edit
+      *                Activity.
+      */
+-    protected abstract void firePluginSetting(@NonNull final Context context,
+-            @NonNull final Bundle bundle);
++    protected void firePluginSetting(@NonNull final Context context, @NonNull final Intent intent, @NonNull final Bundle bundle) {
++        firePluginSetting(context,bundle);
++    }
++
++    /**
++     * If {@link #isAsync()} returns true, this method will be called on a
++     * background thread. If {@link #isAsync()} returns false, this method will
++     * be called on the main thread. Regardless of which thread this method is
++     * called on, this method MUST return within 10 seconds per the requirements
++     * for BroadcastReceivers. Either override this method or
++     * {@link #firePluginSetting(Context, Intent, Bundle)}.
++     * Do not override both.
++     *
++     * @param context BroadcastReceiver context.
++     * @param bundle  The plug-in's Bundle previously returned by the edit
++     *                Activity.
++     */
++    protected void firePluginSetting(@NonNull final Context context,
++            @NonNull final Bundle bundle) {
++
++    }
+ }
+diff --git a/repos/android-plugin-client-sdk-for-locale-master/pluginClientSdkLib/src/main/java/com/twofortyfouram/locale/sdk/client/ui/activity/AbstractAppCompatPluginActivity.java b/android-locale-plugin-libraries/android-locale-plugin-libraries/pluginClientSdkLib/src/main/java/com/twofortyfouram/locale/sdk/client/ui/activity/AbstractAppCompatPluginActivity.java
+index dc561bd..ad92d03 100755
+--- a/repos/android-plugin-client-sdk-for-locale-master/pluginClientSdkLib/src/main/java/com/twofortyfouram/locale/sdk/client/ui/activity/AbstractAppCompatPluginActivity.java
++++ b/android-locale-plugin-libraries/android-locale-plugin-libraries/pluginClientSdkLib/src/main/java/com/twofortyfouram/locale/sdk/client/ui/activity/AbstractAppCompatPluginActivity.java
+@@ -13,14 +13,17 @@
+  * limitations under the License.
+  */
+ 
+ package com.twofortyfouram.locale.sdk.client.ui.activity;
+ 
++import android.content.Intent;
+ import android.os.Bundle;
+-import android.support.annotation.NonNull;
+-import android.support.annotation.Nullable;
+-import android.support.v7.app.AppCompatActivity;
++
++import androidx.annotation.NonNull;
++import androidx.annotation.Nullable;
++
++import androidx.appcompat.app.AppCompatActivity;
+ 
+ import com.twofortyfouram.locale.sdk.client.internal.PluginActivityDelegate;
+ 
+ /**
+  * <p>NOTE: This class is for compatibility with Material Design via the appcompat-v7 library.  To use this
+@@ -53,12 +56,13 @@ import com.twofortyfouram.locale.sdk.client.internal.PluginActivityDelegate;
+  * {@link #onPostCreateWithPreviousResult(android.os.Bundle, String)} during the
+  * Activity's {@link #onPostCreate(android.os.Bundle)} phase when the Activity is first
+  * created.</li>
+  * </ul>
+  * <p>During
+- * the Activity's {@link #finish()} lifecycle callback, this class will call {@link
+- * #getResultBundle()} and {@link #getResultBlurb(android.os.Bundle)}, which should return the
++ * the Activity's {@link #finish()} lifecycle callback, this class will call
++ * {@link #getResultIntent()}, {@link #getResultBundle()} and {@link
++ * #getResultBlurb(android.os.Bundle)}, which should return the
+  * Bundle and blurb data the Activity would like to save back to the host.
+  * </p>
+  * <p>
+  * Note that all of these behaviors only apply if the Intent
+  * starting the Activity is one of the plug-in "edit" Intent actions.
+@@ -106,10 +110,15 @@ public abstract class AbstractAppCompatPluginActivity extends AppCompatActivity
+          * first, then the Activity result will be lost.
+          */
+         super.finish();
+     }
+ 
++    @NonNull
++    public Intent getResultIntent() {
++        return new Intent();
++    }
++
+     /**
+      * @return The {@link com.twofortyfouram.locale.api.Intent#EXTRA_BUNDLE EXTRA_BUNDLE} that was
+      * previously saved to the host and subsequently passed back to this Activity for further
+      * editing.  Internally, this method relies on {@link #isBundleValid(android.os.Bundle)}.  If
+      * the bundle exists but is not valid, this method will return null.
+diff --git a/repos/android-plugin-client-sdk-for-locale-master/pluginClientSdkLib/src/main/java/com/twofortyfouram/locale/sdk/client/ui/activity/AbstractFragmentPluginActivity.java b/android-locale-plugin-libraries/android-locale-plugin-libraries/pluginClientSdkLib/src/main/java/com/twofortyfouram/locale/sdk/client/ui/activity/AbstractFragmentPluginActivity.java
+index 066a253..2d66595 100755
+--- a/repos/android-plugin-client-sdk-for-locale-master/pluginClientSdkLib/src/main/java/com/twofortyfouram/locale/sdk/client/ui/activity/AbstractFragmentPluginActivity.java
++++ b/android-locale-plugin-libraries/android-locale-plugin-libraries/pluginClientSdkLib/src/main/java/com/twofortyfouram/locale/sdk/client/ui/activity/AbstractFragmentPluginActivity.java
+@@ -13,14 +13,16 @@
+  * limitations under the License.
+  */
+ 
+ package com.twofortyfouram.locale.sdk.client.ui.activity;
+ 
++import android.content.Intent;
+ import android.os.Bundle;
+-import android.support.annotation.NonNull;
+-import android.support.annotation.Nullable;
+-import android.support.v4.app.FragmentActivity;
++import androidx.annotation.NonNull;
++import androidx.annotation.Nullable;
++
++import androidx.fragment.app.FragmentActivity;
+ 
+ import com.twofortyfouram.locale.sdk.client.internal.PluginActivityDelegate;
+ 
+ /**
+  * <p>NOTE: This class is for backwards compatibility via the support-v4 library.  To use this
+@@ -53,12 +55,13 @@ import com.twofortyfouram.locale.sdk.client.internal.PluginActivityDelegate;
+  * {@link #onPostCreateWithPreviousResult(Bundle, String)} during the
+  * Activity's {@link #onPostCreate(Bundle)} phase when the Activity is first
+  * created.</li>
+  * </ul>
+  * <p>During
+- * the Activity's {@link #finish()} lifecycle callback, this class will call {@link
+- * #getResultBundle()} and {@link #getResultBlurb(android.os.Bundle)}, which should return the
++ * the Activity's {@link #finish()} lifecycle callback, this class will call
++ * {@link #getResultIntent()}, {@link #getResultBundle()} and {@link
++ * #getResultBlurb(android.os.Bundle)}, which should return the
+  * Bundle and blurb data the Activity would like to save back to the host.
+  * </p>
+  * <p>
+  * Note that all of these behaviors only apply if the Intent
+  * starting the Activity is one of the plug-in "edit" Intent actions.
+@@ -106,10 +109,15 @@ public abstract class AbstractFragmentPluginActivity extends FragmentActivity im
+          * first, then the Activity result will be lost.
+          */
+         super.finish();
+     }
+ 
++    @NonNull
++    public Intent getResultIntent() {
++        return new Intent();
++    }
++
+     /**
+      * @return The {@link com.twofortyfouram.locale.api.Intent#EXTRA_BUNDLE EXTRA_BUNDLE} that was
+      * previously saved to the host and subsequently passed back to this Activity for further
+      * editing.  Internally, this method relies on {@link #isBundleValid(android.os.Bundle)}.  If
+      * the bundle exists but is not valid, this method will return null.
+diff --git a/repos/android-plugin-client-sdk-for-locale-master/pluginClientSdkLib/src/main/java/com/twofortyfouram/locale/sdk/client/ui/activity/AbstractPluginActivity.java b/android-locale-plugin-libraries/android-locale-plugin-libraries/pluginClientSdkLib/src/main/java/com/twofortyfouram/locale/sdk/client/ui/activity/AbstractPluginActivity.java
+index 31f708c..0ba6201 100755
+--- a/repos/android-plugin-client-sdk-for-locale-master/pluginClientSdkLib/src/main/java/com/twofortyfouram/locale/sdk/client/ui/activity/AbstractPluginActivity.java
++++ b/android-locale-plugin-libraries/android-locale-plugin-libraries/pluginClientSdkLib/src/main/java/com/twofortyfouram/locale/sdk/client/ui/activity/AbstractPluginActivity.java
+@@ -14,13 +14,15 @@
+  */
+ 
+ package com.twofortyfouram.locale.sdk.client.ui.activity;
+ 
+ import android.app.Activity;
++import android.content.Intent;
+ import android.os.Bundle;
+-import android.support.annotation.NonNull;
+-import android.support.annotation.Nullable;
++
++import androidx.annotation.NonNull;
++import androidx.annotation.Nullable;
+ 
+ import com.twofortyfouram.locale.sdk.client.internal.PluginActivityDelegate;
+ 
+ import net.jcip.annotations.NotThreadSafe;
+ 
+@@ -104,10 +106,15 @@ public abstract class AbstractPluginActivity extends Activity implements IPlugin
+          * first, then the Activity result will be lost.
+          */
+         super.finish();
+     }
+ 
++    @NonNull
++    public Intent getResultIntent() {
++        return new Intent();
++    }
++
+     /**
+      * @return The {@link com.twofortyfouram.locale.api.Intent#EXTRA_BUNDLE EXTRA_BUNDLE} that was
+      * previously saved to the host and subsequently passed back to this Activity for further
+      * editing.  Internally, this method relies on {@link #isBundleValid(android.os.Bundle)}.  If
+      * the bundle exists but is not valid, this method will return null.
+diff --git a/repos/android-plugin-client-sdk-for-locale-master/pluginClientSdkLib/src/main/java/com/twofortyfouram/locale/sdk/client/ui/activity/IPluginActivity.java b/android-locale-plugin-libraries/android-locale-plugin-libraries/pluginClientSdkLib/src/main/java/com/twofortyfouram/locale/sdk/client/ui/activity/IPluginActivity.java
+index 2ceccda..3211578 100755
+--- a/repos/android-plugin-client-sdk-for-locale-master/pluginClientSdkLib/src/main/java/com/twofortyfouram/locale/sdk/client/ui/activity/IPluginActivity.java
++++ b/android-locale-plugin-libraries/android-locale-plugin-libraries/pluginClientSdkLib/src/main/java/com/twofortyfouram/locale/sdk/client/ui/activity/IPluginActivity.java
+@@ -1,10 +1,11 @@
+ package com.twofortyfouram.locale.sdk.client.ui.activity;
+ 
++import android.content.Intent;
+ import android.os.Bundle;
+-import android.support.annotation.NonNull;
+-import android.support.annotation.Nullable;
++import androidx.annotation.NonNull;
++import androidx.annotation.Nullable;
+ 
+ /**
+  * Common interface for plug-in Activities.
+  */
+ public interface IPluginActivity {
+@@ -50,16 +51,22 @@ public interface IPluginActivity {
+      * called
+      * when the Activity is recreated (e.g. {@code savedInstanceState != null}) such as after a
+      * configuration change like a screen rotation.</p>
+      *
+      * @param previousBundle Previous bundle that the Activity saved.
+-     * @param previousBlurb  Previous blurb that the Activity saved
++     * @param previousBlurb  Previous blurb that the Activity saved.
+      */
+     void onPostCreateWithPreviousResult(
+             @NonNull final Bundle previousBundle, @NonNull final String previousBlurb);
+ 
+     /**
++     * @return Intent for the plug-in or {@code null}.
++     */
++    @NonNull
++    Intent getResultIntent();
++
++    /**
+      * @return Bundle for the plug-in or {@code null} if a valid Bundle cannot
+      * be generated.
+      */
+     @Nullable
+     Bundle getResultBundle();
+diff --git a/repos/android-plugin-client-sdk-for-locale-master/pluginClientSdkLib/src/main/java/com/twofortyfouram/locale/sdk/client/ui/activity/InfoActivity.java b/android-locale-plugin-libraries/android-locale-plugin-libraries/pluginClientSdkLib/src/main/java/com/twofortyfouram/locale/sdk/client/ui/activity/InfoActivity.java
+index 1ba73cc..87392df 100755
+--- a/repos/android-plugin-client-sdk-for-locale-master/pluginClientSdkLib/src/main/java/com/twofortyfouram/locale/sdk/client/ui/activity/InfoActivity.java
++++ b/android-locale-plugin-libraries/android-locale-plugin-libraries/pluginClientSdkLib/src/main/java/com/twofortyfouram/locale/sdk/client/ui/activity/InfoActivity.java
+@@ -19,12 +19,13 @@ import android.app.Activity;
+ import android.content.Context;
+ import android.content.Intent;
+ import android.content.pm.PackageManager;
+ import android.net.Uri;
+ import android.os.Bundle;
+-import android.support.annotation.NonNull;
+-import android.support.annotation.Nullable;
++
++import androidx.annotation.NonNull;
++import androidx.annotation.Nullable;
+ 
+ import com.twofortyfouram.locale.sdk.client.R;
+ import com.twofortyfouram.log.Lumberjack;
+ 
+ import net.jcip.annotations.NotThreadSafe;

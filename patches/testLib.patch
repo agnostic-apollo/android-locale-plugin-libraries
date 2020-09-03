@@ -1,0 +1,247 @@
+diff --git a/repos/android-test-master/testLib/src/main/java/com/twofortyfouram/test/context/ContentProviderMockContext.java b/android-locale-plugin-libraries/android-locale-plugin-libraries/testLib/src/main/java/com/twofortyfouram/test/context/ContentProviderMockContext.java
+index bf4abda..9135b17 100755
+--- a/repos/android-test-master/testLib/src/main/java/com/twofortyfouram/test/context/ContentProviderMockContext.java
++++ b/android-locale-plugin-libraries/android-locale-plugin-libraries/testLib/src/main/java/com/twofortyfouram/test/context/ContentProviderMockContext.java
+@@ -18,11 +18,13 @@ package com.twofortyfouram.test.context;
+ 
+ import android.content.ContentProvider;
+ import android.content.ContentResolver;
+ import android.content.Context;
+ import android.content.ContextWrapper;
+-import android.support.annotation.NonNull;
++
++import androidx.annotation.NonNull;
++
+ import android.test.mock.MockContentResolver;
+ 
+ import net.jcip.annotations.NotThreadSafe;
+ 
+ import java.util.Map;
+diff --git a/repos/android-test-master/testLib/src/main/java/com/twofortyfouram/test/context/FeatureContextWrapper.java b/android-locale-plugin-libraries/android-locale-plugin-libraries/testLib/src/main/java/com/twofortyfouram/test/context/FeatureContextWrapper.java
+index 1640452..d8e9d24 100755
+--- a/repos/android-test-master/testLib/src/main/java/com/twofortyfouram/test/context/FeatureContextWrapper.java
++++ b/android-locale-plugin-libraries/android-locale-plugin-libraries/testLib/src/main/java/com/twofortyfouram/test/context/FeatureContextWrapper.java
+@@ -20,13 +20,13 @@ package com.twofortyfouram.test.context;
+ import android.content.ComponentName;
+ import android.content.Context;
+ import android.content.ContextWrapper;
+ import android.content.pm.PackageInfo;
+ import android.content.pm.PackageManager;
+-import android.support.annotation.NonNull;
+-import android.support.annotation.Nullable;
+ 
++import androidx.annotation.NonNull;
++import androidx.annotation.Nullable;
+ import net.jcip.annotations.Immutable;
+ 
+ import java.util.Arrays;
+ 
+ /**
+diff --git a/repos/android-test-master/testLib/src/main/java/com/twofortyfouram/test/context/ReceiverContextWrapper.java b/android-locale-plugin-libraries/android-locale-plugin-libraries/testLib/src/main/java/com/twofortyfouram/test/context/ReceiverContextWrapper.java
+index ab0bf67..1cd3f7b 100755
+--- a/repos/android-test-master/testLib/src/main/java/com/twofortyfouram/test/context/ReceiverContextWrapper.java
++++ b/android-locale-plugin-libraries/android-locale-plugin-libraries/testLib/src/main/java/com/twofortyfouram/test/context/ReceiverContextWrapper.java
+@@ -23,14 +23,14 @@ import android.content.Context;
+ import android.content.ContextWrapper;
+ import android.content.Intent;
+ import android.os.Bundle;
+ import android.os.Handler;
+ import android.os.UserHandle;
+-import android.support.annotation.NonNull;
+-import android.support.annotation.Nullable;
+ import android.util.Log;
+ 
++import androidx.annotation.NonNull;
++import androidx.annotation.Nullable;
+ import net.jcip.annotations.Immutable;
+ import net.jcip.annotations.NotThreadSafe;
+ 
+ import java.util.Collection;
+ import java.util.LinkedList;
+diff --git a/repos/android-test-master/testLib/src/main/java/com/twofortyfouram/test/espresso/UiTestPrerequesites.java b/android-locale-plugin-libraries/android-locale-plugin-libraries/testLib/src/main/java/com/twofortyfouram/test/espresso/UiTestPrerequesites.java
+index 6b7d049..fcb965d 100755
+--- a/repos/android-test-master/testLib/src/main/java/com/twofortyfouram/test/espresso/UiTestPrerequesites.java
++++ b/android-locale-plugin-libraries/android-locale-plugin-libraries/testLib/src/main/java/com/twofortyfouram/test/espresso/UiTestPrerequesites.java
+@@ -18,11 +18,12 @@ package com.twofortyfouram.test.espresso;
+ 
+ import android.annotation.TargetApi;
+ import android.content.Context;
+ import android.os.Build;
+ import android.os.PowerManager;
+-import android.support.test.InstrumentationRegistry;
++
++import androidx.test.InstrumentationRegistry;
+ 
+ import net.jcip.annotations.ThreadSafe;
+ 
+ import org.junit.Before;
+ 
+diff --git a/repos/android-test-master/testLib/src/main/java/com/twofortyfouram/test/matcher/ClassImmutableMatcher.java b/android-locale-plugin-libraries/android-locale-plugin-libraries/testLib/src/main/java/com/twofortyfouram/test/matcher/ClassImmutableMatcher.java
+index ba33c5d..dcfcfd1 100755
+--- a/repos/android-test-master/testLib/src/main/java/com/twofortyfouram/test/matcher/ClassImmutableMatcher.java
++++ b/android-locale-plugin-libraries/android-locale-plugin-libraries/testLib/src/main/java/com/twofortyfouram/test/matcher/ClassImmutableMatcher.java
+@@ -14,25 +14,23 @@
+  * specific language governing permissions and limitations under the License.
+  */
+ 
+ package com.twofortyfouram.test.matcher;
+ 
+-
+-import android.support.annotation.NonNull;
+-
+-import net.jcip.annotations.ThreadSafe;
+-
+ import org.hamcrest.Description;
+ import org.hamcrest.TypeSafeDiagnosingMatcher;
+ 
+ import java.lang.reflect.Field;
+ import java.lang.reflect.Modifier;
+ import java.util.Collection;
+ import java.util.LinkedList;
+ import java.util.List;
+ import java.util.Locale;
+ 
++import androidx.annotation.NonNull;
++import net.jcip.annotations.ThreadSafe;
++
+ import static com.twofortyfouram.assertion.Assertions.assertNotNull;
+ 
+ /**
+  * Matcher to verify that a class is probably immutable.  Typical use case is for model objects
+  * with final fields.  Does not verify that mutable fields are correctly encapsulated.
+diff --git a/repos/android-test-master/testLib/src/main/java/com/twofortyfouram/test/matcher/ClassNotInstantiableMatcher.java b/android-locale-plugin-libraries/android-locale-plugin-libraries/testLib/src/main/java/com/twofortyfouram/test/matcher/ClassNotInstantiableMatcher.java
+index ba5d8df..10c09e8 100755
+--- a/repos/android-test-master/testLib/src/main/java/com/twofortyfouram/test/matcher/ClassNotInstantiableMatcher.java
++++ b/android-locale-plugin-libraries/android-locale-plugin-libraries/testLib/src/main/java/com/twofortyfouram/test/matcher/ClassNotInstantiableMatcher.java
+@@ -14,21 +14,19 @@
+  * specific language governing permissions and limitations under the License.
+  */
+ 
+ package com.twofortyfouram.test.matcher;
+ 
+-
+-import android.support.annotation.NonNull;
+-
+-import net.jcip.annotations.ThreadSafe;
+-
+ import org.hamcrest.Description;
+ import org.hamcrest.TypeSafeDiagnosingMatcher;
+ 
+ import java.lang.reflect.Constructor;
+ import java.lang.reflect.InvocationTargetException;
+ 
++import androidx.annotation.NonNull;
++import net.jcip.annotations.ThreadSafe;
++
+ import static com.twofortyfouram.assertion.Assertions.assertNotNull;
+ 
+ /**
+  * Matcher to verify that a class is not instantiable.  Typical use case is for utility classes
+  * that have a private default constructor that throws an {@link AssertionError}.
+diff --git a/repos/android-test-master/testLib/src/main/java/com/twofortyfouram/test/provider/MockableContentProvider.java b/android-locale-plugin-libraries/android-locale-plugin-libraries/testLib/src/main/java/com/twofortyfouram/test/provider/MockableContentProvider.java
+index 4f439da..6d5c864 100755
+--- a/repos/android-test-master/testLib/src/main/java/com/twofortyfouram/test/provider/MockableContentProvider.java
++++ b/android-locale-plugin-libraries/android-locale-plugin-libraries/testLib/src/main/java/com/twofortyfouram/test/provider/MockableContentProvider.java
+@@ -22,16 +22,17 @@ import android.content.ContentValues;
+ import android.content.Context;
+ import android.content.pm.ProviderInfo;
+ import android.database.Cursor;
+ import android.net.Uri;
+ import android.os.Bundle;
+-import android.support.annotation.NonNull;
+-import android.support.annotation.Nullable;
+-import android.support.test.InstrumentationRegistry;
+ 
+ import com.twofortyfouram.test.context.ContentProviderMockContext;
+ 
++import androidx.annotation.NonNull;
++import androidx.annotation.Nullable;
++import androidx.test.InstrumentationRegistry;
++
+ import net.jcip.annotations.Immutable;
+ import net.jcip.annotations.NotThreadSafe;
+ 
+ import java.util.Collections;
+ import java.util.LinkedList;
+diff --git a/repos/android-test-master/testLib/src/main/java/com/twofortyfouram/test/rule/UtcRule.java b/android-locale-plugin-libraries/android-locale-plugin-libraries/testLib/src/main/java/com/twofortyfouram/test/rule/UtcRule.java
+index 2ff7656..322ff3e 100755
+--- a/repos/android-test-master/testLib/src/main/java/com/twofortyfouram/test/rule/UtcRule.java
++++ b/android-locale-plugin-libraries/android-locale-plugin-libraries/testLib/src/main/java/com/twofortyfouram/test/rule/UtcRule.java
+@@ -14,12 +14,11 @@
+  * specific language governing permissions and limitations under the License.
+  */
+ 
+ package com.twofortyfouram.test.rule;
+ 
+-import android.support.annotation.NonNull;
+-
++import androidx.annotation.NonNull;
+ import net.jcip.annotations.Immutable;
+ 
+ import org.junit.rules.TestWatcher;
+ import org.junit.runner.Description;
+ 
+diff --git a/repos/android-test-master/testLib/src/main/java/com/twofortyfouram/test/ui/activity/ActivityTestUtil.java b/android-locale-plugin-libraries/android-locale-plugin-libraries/testLib/src/main/java/com/twofortyfouram/test/ui/activity/ActivityTestUtil.java
+index d3a5557..f65ea9c 100755
+--- a/repos/android-test-master/testLib/src/main/java/com/twofortyfouram/test/ui/activity/ActivityTestUtil.java
++++ b/android-locale-plugin-libraries/android-locale-plugin-libraries/testLib/src/main/java/com/twofortyfouram/test/ui/activity/ActivityTestUtil.java
+@@ -19,14 +19,14 @@ package com.twofortyfouram.test.ui.activity;
+ 
+ import android.app.Activity;
+ import android.app.Instrumentation;
+ import android.content.Intent;
+ import android.os.Looper;
+-import android.support.annotation.MainThread;
+-import android.support.annotation.NonNull;
+-import android.support.annotation.Nullable;
+ 
++import androidx.annotation.NonNull;
++import androidx.annotation.Nullable;
++import androidx.annotation.MainThread;
+ import net.jcip.annotations.ThreadSafe;
+ 
+ import java.lang.reflect.Field;
+ import java.util.concurrent.atomic.AtomicInteger;
+ import java.util.concurrent.atomic.AtomicReference;
+diff --git a/repos/android-test-master/testLib/src/main/java/com/twofortyfouram/test/util/FirebaseTestLabUtil.java b/android-locale-plugin-libraries/android-locale-plugin-libraries/testLib/src/main/java/com/twofortyfouram/test/util/FirebaseTestLabUtil.java
+index 21bee46..0c489f9 100755
+--- a/repos/android-test-master/testLib/src/main/java/com/twofortyfouram/test/util/FirebaseTestLabUtil.java
++++ b/android-locale-plugin-libraries/android-locale-plugin-libraries/testLib/src/main/java/com/twofortyfouram/test/util/FirebaseTestLabUtil.java
+@@ -16,12 +16,12 @@
+ 
+ package com.twofortyfouram.test.util;
+ 
+ import android.content.Context;
+ import android.provider.Settings;
+-import android.support.annotation.NonNull;
+ 
++import androidx.annotation.NonNull;
+ import net.jcip.annotations.ThreadSafe;
+ 
+ import static com.twofortyfouram.assertion.Assertions.assertNotNull;
+ 
+ 
+diff --git a/repos/android-test-master/testLib/src/main/java/com/twofortyfouram/test/util/TestButlerUtil.java b/android-locale-plugin-libraries/android-locale-plugin-libraries/testLib/src/main/java/com/twofortyfouram/test/util/TestButlerUtil.java
+index 775f17f..2c98c0f 100755
+--- a/repos/android-test-master/testLib/src/main/java/com/twofortyfouram/test/util/TestButlerUtil.java
++++ b/android-locale-plugin-libraries/android-locale-plugin-libraries/testLib/src/main/java/com/twofortyfouram/test/util/TestButlerUtil.java
+@@ -15,15 +15,17 @@
+  */
+ 
+ package com.twofortyfouram.test.util;
+ 
+ import android.content.pm.PackageManager;
+-import android.support.annotation.NonNull;
+-import android.support.test.InstrumentationRegistry;
++
++import androidx.annotation.NonNull;
++import androidx.test.InstrumentationRegistry;
+ 
+ import net.jcip.annotations.ThreadSafe;
+ 
++
+ /**
+  * Utility class for Test Butler.  This class is safe to use even if Test Butler is not a
+  * dependency of the client using this library.
+  */
+ @ThreadSafe

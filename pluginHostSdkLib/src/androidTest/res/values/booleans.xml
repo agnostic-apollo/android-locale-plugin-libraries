@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Overlays the debug flag for the spackle-lib. -->
+    <item name="com_twofortyfouram_log_is_debug" type="bool" translatable="false" tools:ignore="ResourceName,UnusedResources">true</item>
+
+</resources>

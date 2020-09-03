@@ -1,0 +1,15 @@
+/annotationLib/*.iml
+/assertionLib/*.iml
+/pluginApiLib/*.iml
+/pluginClientSdkLib/*.iml
+/pluginHostSdkLib/*.iml
+/spackleLib/*.iml
+/testLib/*.iml
+
+/annotationLib/build
+/assertionLib/build
+/pluginApiLib/build
+/pluginClientSdkLib/build
+/pluginHostSdkLib/build
+/spackleLib/build
+/testLib/build

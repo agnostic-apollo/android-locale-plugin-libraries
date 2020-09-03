@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Default plug-in icon size. -->
+    <dimen name="com_twofortyfouram_locale_sdk_host_plugin_icon_size" tools:ignore="UnusedResources">36dip</dimen>
+
+</resources>

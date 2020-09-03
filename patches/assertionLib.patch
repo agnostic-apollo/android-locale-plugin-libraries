@@ -1,0 +1,197 @@
+diff --git a/repos/android-assertion-master/assertionLib/src/androidTest/java/com/twofortyfouram/assertion/AssertionsTest.java b/android-locale-plugin-libraries/android-locale-plugin-libraries/assertionLib/src/androidTest/java/com/twofortyfouram/assertion/AssertionsTest.java
+index 77945aa..0b6716c 100755
+--- a/repos/android-assertion-master/assertionLib/src/androidTest/java/com/twofortyfouram/assertion/AssertionsTest.java
++++ b/android-locale-plugin-libraries/android-locale-plugin-libraries/assertionLib/src/androidTest/java/com/twofortyfouram/assertion/AssertionsTest.java
+@@ -17,14 +17,15 @@
+ package com.twofortyfouram.assertion;
+ 
+ import android.os.Handler;
+ import android.os.HandlerThread;
+ import android.os.Looper;
+-import android.support.test.filters.SmallTest;
+-import android.support.test.runner.AndroidJUnit4;
+ import android.text.format.DateUtils;
+ 
++import androidx.test.filters.SmallTest;
++import androidx.test.runner.AndroidJUnit4;
++
+ import org.junit.Assert;
+ import org.junit.Test;
+ import org.junit.runner.RunWith;
+ 
+ import java.util.Collection;
+diff --git a/repos/android-assertion-master/assertionLib/src/androidTest/java/com/twofortyfouram/assertion/BundleAssertionsTest.java b/android-locale-plugin-libraries/android-locale-plugin-libraries/assertionLib/src/androidTest/java/com/twofortyfouram/assertion/BundleAssertionsTest.java
+index db07d49..83ecab3 100755
+--- a/repos/android-assertion-master/assertionLib/src/androidTest/java/com/twofortyfouram/assertion/BundleAssertionsTest.java
++++ b/android-locale-plugin-libraries/android-locale-plugin-libraries/assertionLib/src/androidTest/java/com/twofortyfouram/assertion/BundleAssertionsTest.java
+@@ -21,13 +21,14 @@ import android.location.Address;
+ import android.location.Location;
+ import android.location.LocationManager;
+ import android.os.Build;
+ import android.os.Bundle;
+ import android.os.PersistableBundle;
+-import android.support.test.filters.SdkSuppress;
+-import android.support.test.filters.SmallTest;
+-import android.support.test.runner.AndroidJUnit4;
++
++import androidx.test.filters.SdkSuppress;
++import androidx.test.filters.SmallTest;
++import androidx.test.runner.AndroidJUnit4;
+ 
+ import com.twofortyfouram.assertion.test.SomeSerializable;
+ 
+ import org.junit.Test;
+ import org.junit.runner.RunWith;
+diff --git a/repos/android-assertion-master/assertionLib/src/androidTest/java/com/twofortyfouram/assertion/CursorAssertionsTest.java b/android-locale-plugin-libraries/android-locale-plugin-libraries/assertionLib/src/androidTest/java/com/twofortyfouram/assertion/CursorAssertionsTest.java
+index 6a398e7..3e2ff4d 100755
+--- a/repos/android-assertion-master/assertionLib/src/androidTest/java/com/twofortyfouram/assertion/CursorAssertionsTest.java
++++ b/android-locale-plugin-libraries/android-locale-plugin-libraries/assertionLib/src/androidTest/java/com/twofortyfouram/assertion/CursorAssertionsTest.java
+@@ -16,12 +16,14 @@
+ 
+ package com.twofortyfouram.assertion;
+ 
+ import android.database.Cursor;
+ import android.database.MatrixCursor;
+-import android.support.test.filters.SmallTest;
+-import android.support.test.runner.AndroidJUnit4;
++
++import androidx.test.filters.SdkSuppress;
++import androidx.test.filters.SmallTest;
++import androidx.test.runner.AndroidJUnit4;
+ 
+ import org.junit.Test;
+ import org.junit.runner.RunWith;
+ 
+ @RunWith(AndroidJUnit4.class)
+diff --git a/repos/android-assertion-master/assertionLib/src/main/java/com/twofortyfouram/assertion/Assertions.java b/android-locale-plugin-libraries/android-locale-plugin-libraries/assertionLib/src/main/java/com/twofortyfouram/assertion/Assertions.java
+index dad40c4..8b48251 100755
+--- a/repos/android-assertion-master/assertionLib/src/main/java/com/twofortyfouram/assertion/Assertions.java
++++ b/android-locale-plugin-libraries/android-locale-plugin-libraries/assertionLib/src/main/java/com/twofortyfouram/assertion/Assertions.java
+@@ -15,12 +15,12 @@
+  */
+ 
+ package com.twofortyfouram.assertion;
+ 
+ import android.os.Looper;
+-import android.support.annotation.NonNull;
+-import android.support.annotation.Nullable;
++import androidx.annotation.NonNull;
++import androidx.annotation.Nullable;
+ 
+ import net.jcip.annotations.ThreadSafe;
+ 
+ import java.util.Collection;
+ import java.util.Locale;
+diff --git a/repos/android-assertion-master/assertionLib/src/main/java/com/twofortyfouram/assertion/BundleAssertions.java b/android-locale-plugin-libraries/android-locale-plugin-libraries/assertionLib/src/main/java/com/twofortyfouram/assertion/BundleAssertions.java
+index 565ac19..25aaef0 100755
+--- a/repos/android-assertion-master/assertionLib/src/main/java/com/twofortyfouram/assertion/BundleAssertions.java
++++ b/android-locale-plugin-libraries/android-locale-plugin-libraries/assertionLib/src/main/java/com/twofortyfouram/assertion/BundleAssertions.java
+@@ -19,14 +19,14 @@ package com.twofortyfouram.assertion;
+ import android.annotation.SuppressLint;
+ import android.os.Build;
+ import android.os.Bundle;
+ import android.os.Parcelable;
+ import android.os.PersistableBundle;
+-import android.support.annotation.NonNull;
+-import android.support.annotation.Nullable;
+-import android.support.annotation.RequiresApi;
+ 
++import androidx.annotation.NonNull;
++import androidx.annotation.Nullable;
++import androidx.annotation.RequiresApi;
+ import net.jcip.annotations.ThreadSafe;
+ 
+ import java.io.ByteArrayOutputStream;
+ import java.io.IOException;
+ import java.io.ObjectOutputStream;
+@@ -429,10 +429,73 @@ public final class BundleAssertions {
+             throw new AssertionError(message);
+         }
+     }
+ 
+     /**
++     * Asserts {@code bundle} contains {@code count} of keys that is between an inclusive range.
++     *
++     * @param bundle        Bundle to check key count of.
++     * @param expectedMinCount Expected minimum count of keys in bundle. Must be greater than or equal to 0.
++     * @param expectedMaxCount Expected maximum count of keys in bundle. Must be greater than or equal to 0.
++     * @throws AssertionError If {@code bundle} doesn't contain keys between the inclusive range {@code expectedMinCount}-{@code expectedMaxCount}.
++     */
++    public static void assertKeyCount(@NonNull final Bundle bundle, final int expectedMinCount, final int expectedMaxCount)
++            throws AssertionError {
++        Assertions.assertNotNull(bundle, "bundle"); //$NON-NLS-1$
++        Assertions.assertInRangeInclusive(expectedMinCount, 0, Integer.MAX_VALUE,
++                "expectedMinCount"); //$NON-NLS-1$
++        Assertions.assertInRangeInclusive(expectedMaxCount, 0, Integer.MAX_VALUE,
++                "expectedMaxCount"); //$NON-NLS-1$
++
++        if (expectedMinCount > expectedMaxCount) {
++            throw new IllegalArgumentException("expectedMaxCount is not >= expectedMinCount"); //$NON-NLS-1$
++        }
++
++        if (bundle.keySet().size() < expectedMinCount || bundle.keySet().size() > expectedMaxCount) {
++            final String message = formatMessage(
++                    "bundle must contain %d-%d keys, but currently contains %d keys: %s",
++                    expectedMinCount, //$NON-NLS-1$
++                    expectedMaxCount, //$NON-NLS-1$
++                    bundle.keySet().size(), bundle.keySet().toString());
++
++            throw new AssertionError(message);
++        }
++    }
++
++    /**
++     * Asserts {@code bundle} contains {@code count} of keys that is between an inclusive range.
++     *
++     * @param bundle        Bundle to check key count of.
++     * @param expectedMinCount Expected minimum count of keys in bundle. Must be greater than or equal to 0.
++     * @param expectedMaxCount Expected maximum count of keys in bundle. Must be greater than or equal to 0.
++     * @throws AssertionError If {@code bundle} doesn't contain keys between the inclusive range {@code expectedMinCount}-{@code expectedMaxCount}.
++     */
++    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
++    public static void assertKeyCount(@NonNull final PersistableBundle bundle, final int expectedMinCount, final int expectedMaxCount)
++            throws AssertionError {
++        Assertions.assertNotNull(bundle, "bundle"); //$NON-NLS-1$
++        Assertions.assertInRangeInclusive(expectedMinCount, 0, Integer.MAX_VALUE,
++                "expectedMinCount"); //$NON-NLS-1$
++        Assertions.assertInRangeInclusive(expectedMaxCount, 0, Integer.MAX_VALUE,
++                "expectedMaxCount"); //$NON-NLS-1$
++
++        if (expectedMinCount > expectedMaxCount) {
++            throw new IllegalArgumentException("expectedMaxCount is not >= expectedMinCount"); //$NON-NLS-1$
++        }
++
++        if (bundle.keySet().size() < expectedMinCount || bundle.keySet().size() > expectedMaxCount) {
++            final String message = formatMessage(
++                    "bundle must contain %d-%d keys, but currently contains %d keys: %s",
++                    expectedMinCount, //$NON-NLS-1$
++                    expectedMaxCount, //$NON-NLS-1$
++                    bundle.keySet().size(), bundle.keySet().toString());
++
++            throw new AssertionError(message);
++        }
++    }
++
++    /**
+      * Asserts whether that a Bundle does not contain private {@code Serializable} classes.
+      *
+      * @param bundle bundle to check.
+      * @throws AssertionError if {@code bundle} contains a {@code Serializable} object that isn't
+      *                        part of the Android platform.
+diff --git a/repos/android-assertion-master/assertionLib/src/main/java/com/twofortyfouram/assertion/CursorAssertions.java b/android-locale-plugin-libraries/android-locale-plugin-libraries/assertionLib/src/main/java/com/twofortyfouram/assertion/CursorAssertions.java
+index bc78b01..94d7574 100755
+--- a/repos/android-assertion-master/assertionLib/src/main/java/com/twofortyfouram/assertion/CursorAssertions.java
++++ b/android-locale-plugin-libraries/android-locale-plugin-libraries/assertionLib/src/main/java/com/twofortyfouram/assertion/CursorAssertions.java
+@@ -16,11 +16,11 @@
+ 
+ 
+ package com.twofortyfouram.assertion;
+ 
+ import android.database.Cursor;
+-import android.support.annotation.NonNull;
++import androidx.annotation.NonNull;
+ 
+ import net.jcip.annotations.Immutable;
+ 
+ import java.util.Locale;
+ 

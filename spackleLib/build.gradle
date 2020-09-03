@@ -1,0 +1,37 @@
+apply plugin: 'com.android.library'
+apply plugin: 'maven'
+
+android {
+    compileSdkVersion 29
+    buildToolsVersion "29.0.2"
+    defaultConfig {
+        minSdkVersion 16
+        targetSdkVersion 29
+        versionCode 1
+        versionName "3.0.0"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+    resourcePrefix 'com_twofortyfouram_spackle_'
+}
+
+dependencies {
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation "androidx.annotation:annotation:1.1.0"
+
+    implementation group:'net.jcip', name:'jcip-annotations', version:"1.0"
+
+    implementation project(':annotationLib')
+    implementation project(':assertionLib')
+    //androidTestImplementation project(':testLib');
+}
+
+// Workaround for naming conflict between maven and android plugins
+// http://stackoverflow.com/questions/18559932/gradle-maven-plugin-install-task-does-not-work-with-android-library-project
+task installArchives(type: Upload) {
+    description "Installs artifacts to mavenLocal."
+    repositories.mavenInstaller {
+        configuration = configurations.default
+    }
+}

@@ -1,0 +1,534 @@
+diff --git a/repos/android-spackle-master/spackleLib/src/main/java/com/twofortyfouram/log/Lumberjack.java b/android-locale-plugin-libraries/android-locale-plugin-libraries/spackleLib/src/main/java/com/twofortyfouram/log/Lumberjack.java
+index 65ba586..038fa6c 100755
+--- a/repos/android-spackle-master/spackleLib/src/main/java/com/twofortyfouram/log/Lumberjack.java
++++ b/android-locale-plugin-libraries/android-locale-plugin-libraries/spackleLib/src/main/java/com/twofortyfouram/log/Lumberjack.java
+@@ -24,12 +24,10 @@ import android.content.Intent;
+ import android.content.res.Resources;
+ import android.database.Cursor;
+ import android.database.DatabaseUtils;
+ import android.os.Build;
+ import android.os.Bundle;
+-import android.support.annotation.NonNull;
+-import android.support.annotation.Nullable;
+ import android.util.Log;
+ 
+ import com.twofortyfouram.spackle.AndroidSdkVersion;
+ import com.twofortyfouram.spackle.AppBuildInfo;
+ import com.twofortyfouram.spackle.ContextUtil;
+@@ -37,10 +35,12 @@ import com.twofortyfouram.spackle.ProcessUtil;
+ import com.twofortyfouram.spackle.R;
+ import com.twofortyfouram.spackle.ResourceUtil;
+ import com.twofortyfouram.spackle.bundle.BundlePrinter;
+ import com.twofortyfouram.spackle.internal.Reflector;
+ 
++import androidx.annotation.NonNull;
++import androidx.annotation.Nullable;
+ import net.jcip.annotations.ThreadSafe;
+ 
+ import java.util.Arrays;
+ import java.util.Locale;
+ 
+diff --git a/repos/android-spackle-master/spackleLib/src/main/java/com/twofortyfouram/spackle/AlarmManagerCompat.java b/android-locale-plugin-libraries/android-locale-plugin-libraries/spackleLib/src/main/java/com/twofortyfouram/spackle/AlarmManagerCompat.java
+index 8b30da6..1870038 100755
+--- a/repos/android-spackle-master/spackleLib/src/main/java/com/twofortyfouram/spackle/AlarmManagerCompat.java
++++ b/android-locale-plugin-libraries/android-locale-plugin-libraries/spackleLib/src/main/java/com/twofortyfouram/spackle/AlarmManagerCompat.java
+@@ -25,23 +25,23 @@ import android.content.Context;
+ import android.os.Build;
+ import android.os.Handler;
+ import android.os.HandlerThread;
+ import android.os.PowerManager;
+ import android.os.SystemClock;
+-import android.support.annotation.IntDef;
+-import android.support.annotation.IntRange;
+-import android.support.annotation.NonNull;
+-import android.support.annotation.Nullable;
+-import android.support.annotation.RequiresPermission;
+ import android.text.format.DateUtils;
+ 
+ import com.twofortyfouram.log.Lumberjack;
+ import com.twofortyfouram.spackle.power.PartialWakeLock;
+ 
++import androidx.annotation.NonNull;
++import androidx.annotation.Nullable;
++import androidx.annotation.IntDef;
++import androidx.annotation.IntRange;
++import androidx.annotation.RequiresPermission;
++import net.jcip.annotations.ThreadSafe;
+ import net.jcip.annotations.GuardedBy;
+ import net.jcip.annotations.Immutable;
+-import net.jcip.annotations.ThreadSafe;
+ 
+ import java.lang.annotation.Retention;
+ import java.lang.annotation.RetentionPolicy;
+ 
+ import static com.twofortyfouram.assertion.Assertions.assertInRangeInclusive;
+diff --git a/repos/android-spackle-master/spackleLib/src/main/java/com/twofortyfouram/spackle/AppBuildInfo.java b/android-locale-plugin-libraries/android-locale-plugin-libraries/spackleLib/src/main/java/com/twofortyfouram/spackle/AppBuildInfo.java
+index 294c8aa..c0ec6a6 100755
+--- a/repos/android-spackle-master/spackleLib/src/main/java/com/twofortyfouram/spackle/AppBuildInfo.java
++++ b/android-locale-plugin-libraries/android-locale-plugin-libraries/spackleLib/src/main/java/com/twofortyfouram/spackle/AppBuildInfo.java
+@@ -19,16 +19,16 @@ package com.twofortyfouram.spackle;
+ import android.content.Context;
+ import android.content.pm.ApplicationInfo;
+ import android.content.pm.PackageInfo;
+ import android.content.pm.PackageManager;
+ import android.content.pm.PackageManager.NameNotFoundException;
+-import android.support.annotation.NonNull;
+-
+-import com.twofortyfouram.log.Lumberjack;
+ 
++import androidx.annotation.NonNull;
+ import net.jcip.annotations.ThreadSafe;
+ 
++import com.twofortyfouram.log.Lumberjack;
++
+ import static com.twofortyfouram.assertion.Assertions.assertNotNull;
+ 
+ /**
+  * Determines information about the build of the app that is
+  * running.
+diff --git a/repos/android-spackle-master/spackleLib/src/main/java/com/twofortyfouram/spackle/ClockImpl.java b/android-locale-plugin-libraries/android-locale-plugin-libraries/spackleLib/src/main/java/com/twofortyfouram/spackle/ClockImpl.java
+index 58c98e2..54dfbd5 100755
+--- a/repos/android-spackle-master/spackleLib/src/main/java/com/twofortyfouram/spackle/ClockImpl.java
++++ b/android-locale-plugin-libraries/android-locale-plugin-libraries/spackleLib/src/main/java/com/twofortyfouram/spackle/ClockImpl.java
+@@ -16,12 +16,12 @@
+ 
+ package com.twofortyfouram.spackle;
+ 
+ 
+ import android.os.SystemClock;
+-import android.support.annotation.NonNull;
+ 
++import androidx.annotation.NonNull;
+ import net.jcip.annotations.ThreadSafe;
+ 
+ @ThreadSafe
+ public final class ClockImpl implements IClock {
+ 
+diff --git a/repos/android-spackle-master/spackleLib/src/main/java/com/twofortyfouram/spackle/ContextUtil.java b/android-locale-plugin-libraries/android-locale-plugin-libraries/spackleLib/src/main/java/com/twofortyfouram/spackle/ContextUtil.java
+index 7c5c25a..26c0ab3 100755
+--- a/repos/android-spackle-master/spackleLib/src/main/java/com/twofortyfouram/spackle/ContextUtil.java
++++ b/android-locale-plugin-libraries/android-locale-plugin-libraries/spackleLib/src/main/java/com/twofortyfouram/spackle/ContextUtil.java
+@@ -18,16 +18,16 @@ package com.twofortyfouram.spackle;
+ 
+ import android.app.Activity;
+ import android.app.Service;
+ import android.app.backup.BackupAgent;
+ import android.content.Context;
+-import android.support.annotation.NonNull;
+-
+-import com.twofortyfouram.log.Lumberjack;
+ 
++import androidx.annotation.NonNull;
+ import net.jcip.annotations.ThreadSafe;
+ 
++import com.twofortyfouram.log.Lumberjack;
++
+ import static com.twofortyfouram.assertion.Assertions.assertNotNull;
+ 
+ /**
+  * Utilities for interaction with {@link Context}.
+  */
+diff --git a/repos/android-spackle-master/spackleLib/src/main/java/com/twofortyfouram/spackle/MapCompat.java b/android-locale-plugin-libraries/android-locale-plugin-libraries/spackleLib/src/main/java/com/twofortyfouram/spackle/MapCompat.java
+index f28e4f4..6d69f06 100755
+--- a/repos/android-spackle-master/spackleLib/src/main/java/com/twofortyfouram/spackle/MapCompat.java
++++ b/android-locale-plugin-libraries/android-locale-plugin-libraries/spackleLib/src/main/java/com/twofortyfouram/spackle/MapCompat.java
+@@ -16,15 +16,15 @@
+ 
+ package com.twofortyfouram.spackle;
+ 
+ import android.annotation.TargetApi;
+ import android.os.Build;
+-import android.support.annotation.IntRange;
+-import android.support.annotation.NonNull;
+-import android.support.annotation.VisibleForTesting;
+ import android.util.ArrayMap;
+ 
++import androidx.annotation.IntRange;
++import androidx.annotation.NonNull;
++import androidx.annotation.VisibleForTesting;
+ import net.jcip.annotations.ThreadSafe;
+ 
+ import java.util.HashMap;
+ import java.util.Map;
+ 
+@@ -53,11 +53,11 @@ public final class MapCompat {
+      * @param <K>      Key type of the map.
+      * @param <V>      Value type of the map.
+      * @return A new map instance.
+      */
+     @NonNull
+-    public static final <K, V> Map<K, V> newMap(@IntRange(from = 0) final int capacity) {
++    public static <K, V> Map<K, V> newMap(@IntRange(from = 0) final int capacity) {
+         assertInRangeInclusive(capacity, 0, Integer.MAX_VALUE, "capacity"); //$NON-NLS-1$
+ 
+         final Map<K, V> map;
+         if (AndroidSdkVersion.isAtLeastSdk(Build.VERSION_CODES.KITKAT)
+                 && ARRAY_MAP_MAX_SIZE_CUTOFF_INCLUSIVE >= capacity) {
+@@ -69,11 +69,11 @@ public final class MapCompat {
+         return map;
+     }
+ 
+     @NonNull
+     @TargetApi(Build.VERSION_CODES.KITKAT)
+-    private static final <K, V> Map<K, V> newArrayMap(@IntRange(from = 0) final int capacity) {
++    private static <K, V> Map<K, V> newArrayMap(@IntRange(from = 0) final int capacity) {
+         return new ArrayMap<>(capacity);
+     }
+ 
+     /**
+      * Private constructor prevents instantiation.
+diff --git a/repos/android-spackle-master/spackleLib/src/main/java/com/twofortyfouram/spackle/PermissionCompat.java b/android-locale-plugin-libraries/android-locale-plugin-libraries/spackleLib/src/main/java/com/twofortyfouram/spackle/PermissionCompat.java
+index 2ded0d7..cbfb70f 100755
+--- a/repos/android-spackle-master/spackleLib/src/main/java/com/twofortyfouram/spackle/PermissionCompat.java
++++ b/android-locale-plugin-libraries/android-locale-plugin-libraries/spackleLib/src/main/java/com/twofortyfouram/spackle/PermissionCompat.java
+@@ -23,17 +23,17 @@ import android.content.Context;
+ import android.content.pm.PackageInfo;
+ import android.content.pm.PackageManager;
+ import android.os.Build;
+ import android.os.PowerManager;
+ import android.provider.Settings;
+-import android.support.annotation.NonNull;
+-import android.support.annotation.Size;
+-
+-import com.twofortyfouram.log.Lumberjack;
+ 
++import androidx.annotation.NonNull;
++import androidx.annotation.Size;
+ import net.jcip.annotations.ThreadSafe;
+ 
++import com.twofortyfouram.log.Lumberjack;
++
+ import static com.twofortyfouram.assertion.Assertions.assertNotEmpty;
+ import static com.twofortyfouram.assertion.Assertions.assertNotNull;
+ 
+ @ThreadSafe
+ public final class PermissionCompat {
+@@ -230,11 +230,11 @@ public final class PermissionCompat {
+         NOT_GRANTED_BY_USER,
+ 
+         /**
+          * The permission is granted and the app can use the permission.
+          */
+-        GRANTED;
++        GRANTED
+     }
+ 
+     /**
+      * Private constructor prevents instantiation.
+      *
+diff --git a/repos/android-spackle-master/spackleLib/src/main/java/com/twofortyfouram/spackle/ProcessUtil.java b/android-locale-plugin-libraries/android-locale-plugin-libraries/spackleLib/src/main/java/com/twofortyfouram/spackle/ProcessUtil.java
+index bf3fd1f..36393ca 100755
+--- a/repos/android-spackle-master/spackleLib/src/main/java/com/twofortyfouram/spackle/ProcessUtil.java
++++ b/android-locale-plugin-libraries/android-locale-plugin-libraries/spackleLib/src/main/java/com/twofortyfouram/spackle/ProcessUtil.java
+@@ -17,15 +17,15 @@
+ package com.twofortyfouram.spackle;
+ 
+ import android.app.ActivityManager;
+ import android.app.ActivityManager.RunningAppProcessInfo;
+ import android.content.Context;
+-import android.support.annotation.NonNull;
+-import android.support.annotation.Nullable;
+ 
+-import net.jcip.annotations.GuardedBy;
++import androidx.annotation.NonNull;
++import androidx.annotation.Nullable;
+ import net.jcip.annotations.ThreadSafe;
++import net.jcip.annotations.GuardedBy;
+ 
+ import java.util.List;
+ 
+ import static com.twofortyfouram.assertion.Assertions.assertNotNull;
+ import static com.twofortyfouram.log.Lumberjack.formatMessage;
+diff --git a/repos/android-spackle-master/spackleLib/src/main/java/com/twofortyfouram/spackle/ResourceUtil.java b/android-locale-plugin-libraries/android-locale-plugin-libraries/spackleLib/src/main/java/com/twofortyfouram/spackle/ResourceUtil.java
+index 7a8ee84..70cc16b 100755
+--- a/repos/android-spackle-master/spackleLib/src/main/java/com/twofortyfouram/spackle/ResourceUtil.java
++++ b/android-locale-plugin-libraries/android-locale-plugin-libraries/spackleLib/src/main/java/com/twofortyfouram/spackle/ResourceUtil.java
+@@ -16,14 +16,14 @@
+ 
+ package com.twofortyfouram.spackle;
+ 
+ import android.content.Context;
+ import android.content.res.TypedArray;
+-import android.support.annotation.AnyRes;
+-import android.support.annotation.ArrayRes;
+-import android.support.annotation.NonNull;
+ 
++import androidx.annotation.NonNull;
++import androidx.annotation.AnyRes;
++import androidx.annotation.ArrayRes;
+ import net.jcip.annotations.ThreadSafe;
+ 
+ import java.util.NoSuchElementException;
+ 
+ import static com.twofortyfouram.assertion.Assertions.assertNotEmpty;
+diff --git a/repos/android-spackle-master/spackleLib/src/main/java/com/twofortyfouram/spackle/SignatureUtil.java b/android-locale-plugin-libraries/android-locale-plugin-libraries/spackleLib/src/main/java/com/twofortyfouram/spackle/SignatureUtil.java
+index bbcd014..5d6d7bc 100755
+--- a/repos/android-spackle-master/spackleLib/src/main/java/com/twofortyfouram/spackle/SignatureUtil.java
++++ b/android-locale-plugin-libraries/android-locale-plugin-libraries/spackleLib/src/main/java/com/twofortyfouram/spackle/SignatureUtil.java
+@@ -18,14 +18,14 @@ package com.twofortyfouram.spackle;
+ 
+ import android.content.Context;
+ import android.content.pm.PackageInfo;
+ import android.content.pm.PackageManager;
+ import android.content.pm.PackageManager.NameNotFoundException;
+-import android.support.annotation.NonNull;
+ 
+ import com.twofortyfouram.log.Lumberjack;
+ 
++import androidx.annotation.NonNull;
+ import net.jcip.annotations.ThreadSafe;
+ 
+ import java.util.Arrays;
+ 
+ import static com.twofortyfouram.assertion.Assertions.assertNotEmpty;
+diff --git a/repos/android-spackle-master/spackleLib/src/main/java/com/twofortyfouram/spackle/StrictModeCompat.java b/android-locale-plugin-libraries/android-locale-plugin-libraries/spackleLib/src/main/java/com/twofortyfouram/spackle/StrictModeCompat.java
+index c99a6c5..e9cc2b8 100755
+--- a/repos/android-spackle-master/spackleLib/src/main/java/com/twofortyfouram/spackle/StrictModeCompat.java
++++ b/android-locale-plugin-libraries/android-locale-plugin-libraries/spackleLib/src/main/java/com/twofortyfouram/spackle/StrictModeCompat.java
+@@ -19,12 +19,12 @@ package com.twofortyfouram.spackle;
+ import android.annotation.SuppressLint;
+ import android.os.Build;
+ import android.os.StrictMode;
+ import android.os.StrictMode.ThreadPolicy;
+ import android.os.StrictMode.VmPolicy;
+-import android.support.annotation.NonNull;
+ 
++import androidx.annotation.NonNull;
+ import net.jcip.annotations.ThreadSafe;
+ 
+ import static com.twofortyfouram.assertion.Assertions.assertNotEmpty;
+ 
+ /**
+diff --git a/repos/android-spackle-master/spackleLib/src/main/java/com/twofortyfouram/spackle/ThreadUtil.java b/android-locale-plugin-libraries/android-locale-plugin-libraries/spackleLib/src/main/java/com/twofortyfouram/spackle/ThreadUtil.java
+index f47a3cc..473f99c 100755
+--- a/repos/android-spackle-master/spackleLib/src/main/java/com/twofortyfouram/spackle/ThreadUtil.java
++++ b/android-locale-plugin-libraries/android-locale-plugin-libraries/spackleLib/src/main/java/com/twofortyfouram/spackle/ThreadUtil.java
+@@ -16,16 +16,16 @@
+ 
+ package com.twofortyfouram.spackle;
+ 
+ import android.os.HandlerThread;
+ import android.os.Looper;
+-import android.support.annotation.IntDef;
+-import android.support.annotation.NonNull;
+-import android.support.annotation.VisibleForTesting;
+ 
+-import net.jcip.annotations.Immutable;
++import androidx.annotation.NonNull;
++import androidx.annotation.IntDef;
++import androidx.annotation.VisibleForTesting;
+ import net.jcip.annotations.ThreadSafe;
++import net.jcip.annotations.Immutable;
+ 
+ import java.lang.annotation.Retention;
+ import java.lang.annotation.RetentionPolicy;
+ 
+ import static com.twofortyfouram.assertion.Assertions.assertNotEmpty;
+@@ -140,11 +140,11 @@ public final class ThreadUtil {
+         URGENT_DISPLAY(android.os.Process.THREAD_PRIORITY_URGENT_DISPLAY);
+ 
+         @ThreadPriorityTypeDef
+         private final int mPriority;
+ 
+-        private ThreadPriority(@ThreadPriorityTypeDef final int priority) {
++        ThreadPriority(@ThreadPriorityTypeDef final int priority) {
+             mPriority = priority;
+         }
+ 
+         /**
+          * @return The Android thread priority level.
+diff --git a/repos/android-spackle-master/spackleLib/src/main/java/com/twofortyfouram/spackle/TimeFormatter.java b/android-locale-plugin-libraries/android-locale-plugin-libraries/spackleLib/src/main/java/com/twofortyfouram/spackle/TimeFormatter.java
+index 930be76..414f396 100755
+--- a/repos/android-spackle-master/spackleLib/src/main/java/com/twofortyfouram/spackle/TimeFormatter.java
++++ b/android-locale-plugin-libraries/android-locale-plugin-libraries/spackleLib/src/main/java/com/twofortyfouram/spackle/TimeFormatter.java
+@@ -14,14 +14,12 @@
+  * specific language governing permissions and limitations under the License.
+  */
+ 
+ package com.twofortyfouram.spackle;
+ 
+-
+-import android.support.annotation.NonNull;
+-import android.support.annotation.StringDef;
+-
++import androidx.annotation.NonNull;
++import androidx.annotation.StringDef;
+ import net.jcip.annotations.ThreadSafe;
+ 
+ import java.lang.annotation.Retention;
+ import java.lang.annotation.RetentionPolicy;
+ import java.text.SimpleDateFormat;
+diff --git a/repos/android-spackle-master/spackleLib/src/main/java/com/twofortyfouram/spackle/bundle/BundleComparer.java b/android-locale-plugin-libraries/android-locale-plugin-libraries/spackleLib/src/main/java/com/twofortyfouram/spackle/bundle/BundleComparer.java
+index 0f3434c..1322918 100755
+--- a/repos/android-spackle-master/spackleLib/src/main/java/com/twofortyfouram/spackle/bundle/BundleComparer.java
++++ b/android-locale-plugin-libraries/android-locale-plugin-libraries/spackleLib/src/main/java/com/twofortyfouram/spackle/bundle/BundleComparer.java
+@@ -15,15 +15,15 @@
+  */
+ 
+ package com.twofortyfouram.spackle.bundle;
+ 
+ import android.os.Bundle;
+-import android.support.annotation.Nullable;
+ 
+ import com.twofortyfouram.log.Lumberjack;
+ import com.twofortyfouram.spackle.internal.Reflector;
+ 
++import androidx.annotation.Nullable;
+ import net.jcip.annotations.ThreadSafe;
+ 
+ import java.util.Arrays;
+ import java.util.Set;
+ 
+diff --git a/repos/android-spackle-master/spackleLib/src/main/java/com/twofortyfouram/spackle/bundle/BundleKeyComparator.java b/android-locale-plugin-libraries/android-locale-plugin-libraries/spackleLib/src/main/java/com/twofortyfouram/spackle/bundle/BundleKeyComparator.java
+index 7f182e8..55ae556 100755
+--- a/repos/android-spackle-master/spackleLib/src/main/java/com/twofortyfouram/spackle/bundle/BundleKeyComparator.java
++++ b/android-locale-plugin-libraries/android-locale-plugin-libraries/spackleLib/src/main/java/com/twofortyfouram/spackle/bundle/BundleKeyComparator.java
+@@ -14,13 +14,11 @@
+  * specific language governing permissions and limitations under the License.
+  */
+ 
+ package com.twofortyfouram.spackle.bundle;
+ 
+-
+-import android.support.annotation.Nullable;
+-
++import androidx.annotation.Nullable;
+ import net.jcip.annotations.ThreadSafe;
+ 
+ import java.io.Serializable;
+ import java.util.Comparator;
+ 
+diff --git a/repos/android-spackle-master/spackleLib/src/main/java/com/twofortyfouram/spackle/bundle/BundlePrinter.java b/android-locale-plugin-libraries/android-locale-plugin-libraries/spackleLib/src/main/java/com/twofortyfouram/spackle/bundle/BundlePrinter.java
+index cd6c6cf..002a928 100755
+--- a/repos/android-spackle-master/spackleLib/src/main/java/com/twofortyfouram/spackle/bundle/BundlePrinter.java
++++ b/android-locale-plugin-libraries/android-locale-plugin-libraries/spackleLib/src/main/java/com/twofortyfouram/spackle/bundle/BundlePrinter.java
+@@ -15,15 +15,15 @@
+  */
+ 
+ package com.twofortyfouram.spackle.bundle;
+ 
+ import android.os.Bundle;
+-import android.support.annotation.NonNull;
+-import android.support.annotation.Nullable;
+ 
+ import com.twofortyfouram.spackle.internal.Reflector;
+ 
++import androidx.annotation.NonNull;
++import androidx.annotation.Nullable;
+ import net.jcip.annotations.ThreadSafe;
+ 
+ import java.util.Arrays;
+ import java.util.Locale;
+ import java.util.Set;
+diff --git a/repos/android-spackle-master/spackleLib/src/main/java/com/twofortyfouram/spackle/bundle/BundleScrubber.java b/android-locale-plugin-libraries/android-locale-plugin-libraries/spackleLib/src/main/java/com/twofortyfouram/spackle/bundle/BundleScrubber.java
+index 3e72dea..30354ff 100755
+--- a/repos/android-spackle-master/spackleLib/src/main/java/com/twofortyfouram/spackle/bundle/BundleScrubber.java
++++ b/android-locale-plugin-libraries/android-locale-plugin-libraries/spackleLib/src/main/java/com/twofortyfouram/spackle/bundle/BundleScrubber.java
+@@ -17,15 +17,15 @@
+ package com.twofortyfouram.spackle.bundle;
+ 
+ 
+ import android.content.Intent;
+ import android.os.Bundle;
+-import android.support.annotation.CheckResult;
+-import android.support.annotation.Nullable;
+ 
+ import com.twofortyfouram.log.Lumberjack;
+ 
++import androidx.annotation.CheckResult;
++import androidx.annotation.Nullable;
+ import net.jcip.annotations.ThreadSafe;
+ 
+ /**
+  * Scrubs Intents and Bundles of invalid extras, preventing Intent fuzzing and denial-of-service
+  * attacks from malicious applications.  To use this class, call {@link
+diff --git a/repos/android-spackle-master/spackleLib/src/main/java/com/twofortyfouram/spackle/internal/Reflector.java b/android-locale-plugin-libraries/android-locale-plugin-libraries/spackleLib/src/main/java/com/twofortyfouram/spackle/internal/Reflector.java
+index f4cafcb..9927ad6 100755
+--- a/repos/android-spackle-master/spackleLib/src/main/java/com/twofortyfouram/spackle/internal/Reflector.java
++++ b/android-locale-plugin-libraries/android-locale-plugin-libraries/spackleLib/src/main/java/com/twofortyfouram/spackle/internal/Reflector.java
+@@ -15,13 +15,12 @@
+  */
+ 
+ package com.twofortyfouram.spackle.internal;
+ 
+ 
+-import android.support.annotation.NonNull;
+-import android.support.annotation.Nullable;
+-
++import androidx.annotation.NonNull;
++import androidx.annotation.Nullable;
+ import net.jcip.annotations.ThreadSafe;
+ 
+ import java.lang.reflect.InvocationTargetException;
+ 
+ /**
+diff --git a/repos/android-spackle-master/spackleLib/src/main/java/com/twofortyfouram/spackle/power/PartialWakeLock.java b/android-locale-plugin-libraries/android-locale-plugin-libraries/spackleLib/src/main/java/com/twofortyfouram/spackle/power/PartialWakeLock.java
+index d358b9e..4b116f6 100755
+--- a/repos/android-spackle-master/spackleLib/src/main/java/com/twofortyfouram/spackle/power/PartialWakeLock.java
++++ b/android-locale-plugin-libraries/android-locale-plugin-libraries/spackleLib/src/main/java/com/twofortyfouram/spackle/power/PartialWakeLock.java
+@@ -19,13 +19,15 @@ package com.twofortyfouram.spackle.power;
+ import android.Manifest;
+ import android.annotation.SuppressLint;
+ import android.content.Context;
+ import android.os.PowerManager;
+ import android.os.SystemClock;
+-import android.support.annotation.NonNull;
+-import android.support.annotation.RequiresPermission;
+-import android.support.annotation.VisibleForTesting;
++
++import androidx.annotation.NonNull;
++import androidx.annotation.RequiresPermission;
++import androidx.annotation.VisibleForTesting;
++import net.jcip.annotations.ThreadSafe;
+ 
+ import com.twofortyfouram.log.Lumberjack;
+ 
+ import net.jcip.annotations.ThreadSafe;
+ 
+diff --git a/repos/android-spackle-master/spackleLib/src/main/java/com/twofortyfouram/spackle/power/PartialWakeLockForService.java b/android-locale-plugin-libraries/android-locale-plugin-libraries/spackleLib/src/main/java/com/twofortyfouram/spackle/power/PartialWakeLockForService.java
+index 8f2937a..1d36a8f 100755
+--- a/repos/android-spackle-master/spackleLib/src/main/java/com/twofortyfouram/spackle/power/PartialWakeLockForService.java
++++ b/android-locale-plugin-libraries/android-locale-plugin-libraries/spackleLib/src/main/java/com/twofortyfouram/spackle/power/PartialWakeLockForService.java
+@@ -18,17 +18,17 @@ package com.twofortyfouram.spackle.power;
+ 
+ 
+ import android.Manifest;
+ import android.content.Context;
+ import android.content.Intent;
+-import android.support.annotation.NonNull;
+-import android.support.annotation.Nullable;
+-import android.support.annotation.RequiresPermission;
+-import android.support.annotation.VisibleForTesting;
+ 
+-import net.jcip.annotations.GuardedBy;
++import androidx.annotation.NonNull;
++import androidx.annotation.Nullable;
+ import net.jcip.annotations.ThreadSafe;
++import androidx.annotation.RequiresPermission;
++import androidx.annotation.VisibleForTesting;
++import net.jcip.annotations.GuardedBy;
+ 
+ import java.util.Locale;
+ 
+ import static com.twofortyfouram.assertion.Assertions.assertNotEmpty;
+ import static com.twofortyfouram.assertion.Assertions.assertNotNull;
+diff --git a/repos/android-spackle-master/spackleLib/src/main/java/com/twofortyfouram/spackle/test/fixture/MockClockFixture.java b/android-locale-plugin-libraries/android-locale-plugin-libraries/spackleLib/src/main/java/com/twofortyfouram/spackle/test/fixture/MockClockFixture.java
+index 9d0806a..eef235f 100755
+--- a/repos/android-spackle-master/spackleLib/src/main/java/com/twofortyfouram/spackle/test/fixture/MockClockFixture.java
++++ b/android-locale-plugin-libraries/android-locale-plugin-libraries/spackleLib/src/main/java/com/twofortyfouram/spackle/test/fixture/MockClockFixture.java
+@@ -14,13 +14,12 @@
+  * specific language governing permissions and limitations under the License.
+  */
+ 
+ package com.twofortyfouram.spackle.test.fixture;
+ 
+-import android.support.annotation.RestrictTo;
+-import android.support.annotation.VisibleForTesting;
+-
++import androidx.annotation.RestrictTo;
++import androidx.annotation.VisibleForTesting;
+ import net.jcip.annotations.ThreadSafe;
+ 
+ @ThreadSafe
+ @RestrictTo(RestrictTo.Scope.TESTS)
+ @VisibleForTesting(otherwise = VisibleForTesting.NONE)

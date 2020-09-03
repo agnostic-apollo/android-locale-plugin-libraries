@@ -1,0 +1,39 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 29
+    buildToolsVersion "29.0.2"
+    defaultConfig {
+        minSdkVersion 16
+        targetSdkVersion 29
+        versionCode 6
+        versionName "4.0.3"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+    resourcePrefix 'com_twofortyfouram_locale_sdk_client_'
+}
+
+dependencies {
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-intents:3.2.0'
+
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation "androidx.annotation:annotation:1.1.0"
+
+    implementation group:'net.jcip', name:'jcip-annotations', version:"1.0"
+
+    implementation project(':annotationLib')
+    implementation project(':assertionLib')
+    implementation project(':pluginApiLib')
+    implementation project(':spackleLib')
+    //androidTestImplementation project(':testLib')
+}
+
+// Java8 fails the build because of an error with Javadoc involving formatting. Prevent this (for Travis CI)
+if (JavaVersion.current().isJava8Compatible()) {
+    allprojects {
+        tasks.withType(Javadoc) {
+            options.addStringOption('Xdoclint:none', '-quiet')
+        }
+    }
+}

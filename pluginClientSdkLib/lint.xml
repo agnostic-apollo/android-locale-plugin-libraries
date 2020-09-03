@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lint>
+    <!-- App indexing for a library doesn't make sense. -->
+    <issue id="GoogleAppIndexingWarning" severity="ignore"/>
+    <!-- A bug in the app compat library causes this. -->
+    <issue id="ResourceCycle" severity="ignore"/>
+</lint>

@@ -1,0 +1,10 @@
+<resources>
+
+    <string name="com_twofortyfouram_locale_sdk_host_condition_name">Debug</string>
+    <string name="com_twofortyfouram_locale_sdk_host_condition_satisfied">Satisfied</string>
+    <string name="com_twofortyfouram_locale_sdk_host_condition_unsatisfied">Unsatisfied</string>
+    <string name="com_twofortyfouram_locale_sdk_host_condition_unknown">Unknown</string>
+
+    <string name="com_twofortyfouram_locale_sdk_host_setting_name">Debug</string>
+
+</resources>

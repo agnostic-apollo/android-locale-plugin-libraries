@@ -1,0 +1,18 @@
+diff --git a/repos/android-plugin-api-for-locale-master/pluginApiLib/src/main/java/com/twofortyfouram/locale/api/Intent.java b/android-locale-plugin-libraries/android-locale-plugin-libraries/pluginApiLib/src/main/java/com/twofortyfouram/locale/api/Intent.java
+index 9e37108..89e531e 100755
+--- a/repos/android-plugin-api-for-locale-master/pluginApiLib/src/main/java/com/twofortyfouram/locale/api/Intent.java
++++ b/android-locale-plugin-libraries/android-locale-plugin-libraries/pluginApiLib/src/main/java/com/twofortyfouram/locale/api/Intent.java
+@@ -17,11 +17,12 @@ package com.twofortyfouram.locale.api;
+ 
+ 
+ import net.jcip.annotations.ThreadSafe;
+ 
+ import android.os.Parcelable;
+-import android.support.annotation.NonNull;
++
++import androidx.annotation.NonNull;
+ 
+ /**
+  * Contains Intent constants necessary for interacting with the plug-in API for Locale.
+  */
+ @ThreadSafe

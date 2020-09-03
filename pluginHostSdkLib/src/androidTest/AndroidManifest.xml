@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.twofortyfouram.locale.sdk.host"
+    android:installLocation="internalOnly">
+
+    <!-- For code coverage -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
+    <application android:name="com.twofortyfouram.locale.sdk.host.test.DebugApplication">
+
+        <activity
+            android:name="com.twofortyfouram.locale.sdk.host.test.condition.ui.activity.PluginConditionActivity"
+            android:exported="true"
+            android:label="@string/com_twofortyfouram_locale_sdk_host_condition_name">
+            <intent-filter>
+                <action android:name="com.twofortyfouram.locale.intent.action.EDIT_CONDITION" />
+            </intent-filter>
+        </activity>
+
+        <receiver
+            android:name="com.twofortyfouram.locale.sdk.host.test.condition.receiver.PluginConditionReceiver"
+            android:exported="true"
+            tools:ignore="ExportedReceiver">
+            <intent-filter>
+                <action android:name="com.twofortyfouram.locale.intent.action.QUERY_CONDITION" />
+            </intent-filter>
+        </receiver>
+
+        <activity
+            android:name="com.twofortyfouram.locale.sdk.host.test.setting.ui.activity.PluginSettingActivity"
+            android:exported="true"
+            android:label="@string/com_twofortyfouram_locale_sdk_host_setting_name">
+            <intent-filter>
+                <action android:name="com.twofortyfouram.locale.intent.action.EDIT_SETTING" />
+            </intent-filter>
+        </activity>
+
+        <receiver
+            android:name="com.twofortyfouram.locale.sdk.host.test.setting.receiver.PluginSettingReceiver"
+            android:exported="true"
+            tools:ignore="ExportedReceiver">
+            <intent-filter>
+                <action android:name="com.twofortyfouram.locale.intent.action.FIRE_SETTING" />
+            </intent-filter>
+        </receiver>
+
+    </application>
+
+</manifest>
