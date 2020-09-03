@@ -128,10 +128,10 @@ index 6df4c3d..bc01fad 100755
      }
  }
 diff --git a/repos/android-plugin-client-sdk-for-locale-master/pluginClientSdkLib/src/main/java/com/twofortyfouram/locale/sdk/client/receiver/AbstractPluginConditionReceiver.java b/android-locale-plugin-libraries/android-locale-plugin-libraries/pluginClientSdkLib/src/main/java/com/twofortyfouram/locale/sdk/client/receiver/AbstractPluginConditionReceiver.java
-index 44a9045..9f2ce25 100755
+index 44a9045..0afbcba 100755
 --- a/repos/android-plugin-client-sdk-for-locale-master/pluginClientSdkLib/src/main/java/com/twofortyfouram/locale/sdk/client/receiver/AbstractPluginConditionReceiver.java
 +++ b/android-locale-plugin-libraries/android-locale-plugin-libraries/pluginClientSdkLib/src/main/java/com/twofortyfouram/locale/sdk/client/receiver/AbstractPluginConditionReceiver.java
-@@ -18,22 +18,26 @@ package com.twofortyfouram.locale.sdk.client.receiver;
+@@ -18,15 +18,15 @@ package com.twofortyfouram.locale.sdk.client.receiver;
  import android.content.ComponentName;
  import android.content.Context;
  import android.content.Intent;
@@ -144,8 +144,6 @@ index 44a9045..9f2ce25 100755
 -import com.twofortyfouram.annotation.VisibleForTesting.Visibility;
 +import androidx.annotation.NonNull;
 +import androidx.annotation.IntDef;
-+
-+
 +import androidx.annotation.VisibleForTesting;
 +
  import com.twofortyfouram.log.Lumberjack;
@@ -153,16 +151,7 @@ index 44a9045..9f2ce25 100755
  import com.twofortyfouram.spackle.bundle.BundleScrubber;
  
  import java.lang.annotation.Retention;
- import java.lang.annotation.RetentionPolicy;
- 
-+import static com.twofortyfouram.locale.api.Intent.RESULT_CONDITION_UNKNOWN;
-+
- /**
-  * <p>Abstract superclass for a plug-in condition BroadcastReceiver implementation.</p>
-  * <p>The plug-in receiver lifecycle is as follows:</p>
-  * <ol>
-  * <li>{@link #onReceive(android.content.Context, android.content.Intent)} is called by the Android
-@@ -50,13 +54,18 @@ import java.lang.annotation.RetentionPolicy;
+@@ -50,13 +50,18 @@ import java.lang.annotation.RetentionPolicy;
   * RESULT_CONDITION_UNKNOWN} and
   * returns.  If the bundle is valid, then the lifecycle continues.</li>
   * <li>{@link #isAsync()} is called to determine whether the remaining work should be performed on
@@ -184,51 +173,7 @@ index 44a9045..9f2ce25 100755
   * Implementations of this BroadcastReceiver must be registered in the Android
   * Manifest with an Intent filter for
   * {@link com.twofortyfouram.locale.api.Intent#ACTION_QUERY_CONDITION ACTION_QUERY_CONDITION}. The
-@@ -86,22 +95,22 @@ public abstract class AbstractPluginConditionReceiver extends AbstractAsyncRecei
-         if (!com.twofortyfouram.locale.api.Intent.ACTION_QUERY_CONDITION.equals(intent
-                 .getAction())) {
-             Lumberjack
-                     .e("Intent action is not %s",
-                             com.twofortyfouram.locale.api.Intent.ACTION_QUERY_CONDITION); //$NON-NLS-1$
--            setResultCode(com.twofortyfouram.locale.api.Intent.RESULT_CONDITION_UNKNOWN);
-+            setResultCode(RESULT_CONDITION_UNKNOWN);
-             return;
-         }
-         /*
-          * Ignore implicit intents, because they are not valid. It would be
-          * meaningless if ALL plug-in condition BroadcastReceivers installed
-          * were asked to handle queries not intended for them.
-          */
-         if (!new ComponentName(context, this.getClass().getName()).equals(intent
-                 .getComponent())) {
-             Lumberjack.e("Intent is not explicit"); //$NON-NLS-1$
--            setResultCode(com.twofortyfouram.locale.api.Intent.RESULT_CONDITION_UNKNOWN);
-+            setResultCode(RESULT_CONDITION_UNKNOWN);
-             abortBroadcast();
-             return;
-         }
- 
-         final Bundle bundle = intent
-@@ -111,63 +120,66 @@ public abstract class AbstractPluginConditionReceiver extends AbstractAsyncRecei
-         }
- 
-         if (null == bundle) {
-             Lumberjack.e("%s is missing",
-                     com.twofortyfouram.locale.api.Intent.EXTRA_BUNDLE); //$NON-NLS-1$
--            setResultCode(com.twofortyfouram.locale.api.Intent.RESULT_CONDITION_UNKNOWN);
-+            setResultCode(RESULT_CONDITION_UNKNOWN);
-             return;
-         }
- 
-         if (!isBundleValid(bundle)) {
-             Lumberjack.e("%s is invalid",
-                     com.twofortyfouram.locale.api.Intent.EXTRA_BUNDLE); //$NON-NLS-1$
--            setResultCode(com.twofortyfouram.locale.api.Intent.RESULT_CONDITION_UNKNOWN);
-+            setResultCode(RESULT_CONDITION_UNKNOWN);
-             return;
-         }
- 
-         if (isAsync() && AndroidSdkVersion.isAtLeastSdk(Build.VERSION_CODES.HONEYCOMB)) {
+@@ -128,35 +133,38 @@ public abstract class AbstractPluginConditionReceiver extends AbstractAsyncRecei
              final AsyncCallback callback = new AsyncCallback() {
                  @NonNull
                  private final Context mContext = context;
@@ -264,26 +209,13 @@ index 44a9045..9f2ce25 100755
       *                        acceptable values.
       */
 -    @VisibleForTesting(Visibility.PRIVATE)
-+    @VisibleForTesting(otherwise = VisibleForTesting.PROTECTED)
++    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
      /* package */ static void assertResult(final int result) {
          if (com.twofortyfouram.locale.api.Intent.RESULT_CONDITION_SATISFIED != result
                  && com.twofortyfouram.locale.api.Intent.RESULT_CONDITION_UNSATISFIED != result
--                && com.twofortyfouram.locale.api.Intent.RESULT_CONDITION_UNKNOWN != result) {
-+                && RESULT_CONDITION_UNKNOWN != result) {
+                 && com.twofortyfouram.locale.api.Intent.RESULT_CONDITION_UNKNOWN != result) {
              throw new AssertionError(
-                     Lumberjack
-                             .formatMessage(
-                                     "result=%d is not one of [%d, %d, %d]", result, //$NON-NLS-1$
-                                     com.twofortyfouram.locale.api.Intent.RESULT_CONDITION_SATISFIED,
-                                     com.twofortyfouram.locale.api.Intent.RESULT_CONDITION_UNSATISFIED,
--                                    com.twofortyfouram.locale.api.Intent.RESULT_CONDITION_UNKNOWN)
-+                                    RESULT_CONDITION_UNKNOWN)
-             );
-         }
-     }
- 
-     /**
-@@ -186,10 +198,11 @@ public abstract class AbstractPluginConditionReceiver extends AbstractAsyncRecei
+@@ -186,10 +194,11 @@ public abstract class AbstractPluginConditionReceiver extends AbstractAsyncRecei
      protected abstract boolean isBundleValid(@NonNull final Bundle bundle);
  
      /**
@@ -295,7 +227,7 @@ index 44a9045..9f2ce25 100755
       * or other work that may be slow.
       * <p>
       * Asynchronous BroadcastReceivers are not supported prior to Honeycomb, so
-@@ -207,11 +220,48 @@ public abstract class AbstractPluginConditionReceiver extends AbstractAsyncRecei
+@@ -207,13 +216,16 @@ public abstract class AbstractPluginConditionReceiver extends AbstractAsyncRecei
       *
       * If {@link #isAsync()} returns true, this method will be called on a
       * background thread. If {@link #isAsync()} returns false, this method will
@@ -305,9 +237,40 @@ index 44a9045..9f2ce25 100755
 +     * for BroadcastReceivers. Either override this method or
 +     * {@link #getPluginConditionResult(Context, Bundle)}.
 +     * Do not override both or call super of this method.
+      *
+      * @param context BroadcastReceiver context.
++     * @param intent The intent received by the BroadcastReceiver from the host.
+      * @param bundle The plug-in's Bundle previously returned by the edit
+      *               Activity.
+      * @return One of the Locale plug-in query results:
+      * {@link com.twofortyfouram.locale.api.Intent#RESULT_CONDITION_SATISFIED
+      * RESULT_CONDITION_SATISFIED}
+@@ -226,12 +238,48 @@ public abstract class AbstractPluginConditionReceiver extends AbstractAsyncRecei
+      * . If {@code bundle} is invalid, implementations must return
+      * {@link com.twofortyfouram.locale.api.Intent#RESULT_CONDITION_UNKNOWN
+      * RESULT_CONDITION_UNKNOWN}
+      */
+     @ConditionResult
+-    protected abstract int getPluginConditionResult(@NonNull final Context context,
+-                                                    @NonNull final Bundle bundle);
++    protected int getPluginConditionResult(@NonNull final Context context,
++                                                @NonNull final Intent intent,
++                                                    @NonNull final Bundle bundle) {
++        return getPluginConditionResult(context, bundle);
++    }
++
++    /**
++     * Determines the state of the plug-in.
++     *
++     * If {@link #isAsync()} returns true, this method will be called on a
++     * background thread. If {@link #isAsync()} returns false, this method will
++     * be called on the main thread. Regardless of which thread this method is
++     * called on, this method MUST return within 10 seconds per the requirements
++     * for BroadcastReceivers.  Either override this method or
++     * {@link #getPluginConditionResult(Context, Intent, Bundle)}.
++     * Do not override both.
 +     *
 +     * @param context BroadcastReceiver context.
-+     * @param intent The intent received by the BroadcastReceiver from the host.
 +     * @param bundle The plug-in's Bundle previously returned by the edit
 +     *               Activity.
 +     * @return One of the Locale plug-in query results:
@@ -325,47 +288,14 @@ index 44a9045..9f2ce25 100755
 +     */
 +    @ConditionResult
 +    protected int getPluginConditionResult(@NonNull final Context context,
-+                                                @NonNull final Intent intent,
 +                                                @NonNull final Bundle bundle) {
-+        return getPluginConditionResult(context, bundle);
-+    }
-+
-+    /**
-+     * Determines the state of the plug-in.
-+     *
-+     * If {@link #isAsync()} returns true, this method will be called on a
-+     * background thread. If {@link #isAsync()} returns false, this method will
-+     * be called on the main thread. Regardless of which thread this method is
-+     * called on, this method MUST return within 10 seconds per the requirements
-+     * for BroadcastReceivers.  Either override this method or
-+     * {@link #getPluginConditionResult(Context, Intent, Bundle)}.
-+     * Do not override both.
-      *
-      * @param context BroadcastReceiver context.
-      * @param bundle The plug-in's Bundle previously returned by the edit
-      *               Activity.
-      * @return One of the Locale plug-in query results:
-@@ -226,15 +276,16 @@ public abstract class AbstractPluginConditionReceiver extends AbstractAsyncRecei
-      * . If {@code bundle} is invalid, implementations must return
-      * {@link com.twofortyfouram.locale.api.Intent#RESULT_CONDITION_UNKNOWN
-      * RESULT_CONDITION_UNKNOWN}
-      */
-     @ConditionResult
--    protected abstract int getPluginConditionResult(@NonNull final Context context,
--                                                    @NonNull final Bundle bundle);
-+    protected int getPluginConditionResult(@NonNull final Context context,
-+                                                    @NonNull final Bundle bundle) {
-+        return RESULT_CONDITION_UNKNOWN;
++        return com.twofortyfouram.locale.api.Intent.RESULT_CONDITION_UNKNOWN;
 +    }
  
--    @IntDef({com.twofortyfouram.locale.api.Intent.RESULT_CONDITION_SATISFIED, com.twofortyfouram
--            .locale.api.Intent.RESULT_CONDITION_UNKNOWN, com.twofortyfouram.locale.api.Intent
-+    @IntDef({com.twofortyfouram.locale.api.Intent.RESULT_CONDITION_SATISFIED, RESULT_CONDITION_UNKNOWN, com.twofortyfouram.locale.api.Intent
+     @IntDef({com.twofortyfouram.locale.api.Intent.RESULT_CONDITION_SATISFIED, com.twofortyfouram
+             .locale.api.Intent.RESULT_CONDITION_UNKNOWN, com.twofortyfouram.locale.api.Intent
              .RESULT_CONDITION_UNSATISFIED})
      @Retention(RetentionPolicy.SOURCE)
-     public @interface ConditionResult {
- 
-     }
 diff --git a/repos/android-plugin-client-sdk-for-locale-master/pluginClientSdkLib/src/main/java/com/twofortyfouram/locale/sdk/client/receiver/AbstractPluginSettingReceiver.java b/android-locale-plugin-libraries/android-locale-plugin-libraries/pluginClientSdkLib/src/main/java/com/twofortyfouram/locale/sdk/client/receiver/AbstractPluginSettingReceiver.java
 index 10f90e0..072e83e 100755
 --- a/repos/android-plugin-client-sdk-for-locale-master/pluginClientSdkLib/src/main/java/com/twofortyfouram/locale/sdk/client/receiver/AbstractPluginSettingReceiver.java

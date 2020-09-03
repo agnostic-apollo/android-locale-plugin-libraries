@@ -23,8 +23,6 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.IntDef;
-
-
 import androidx.annotation.VisibleForTesting;
 
 import com.twofortyfouram.log.Lumberjack;
@@ -33,8 +31,6 @@ import com.twofortyfouram.spackle.bundle.BundleScrubber;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
-
-import static com.twofortyfouram.locale.api.Intent.RESULT_CONDITION_UNKNOWN;
 
 /**
  * <p>Abstract superclass for a plug-in condition BroadcastReceiver implementation.</p>
@@ -97,7 +93,7 @@ public abstract class AbstractPluginConditionReceiver extends AbstractAsyncRecei
             Lumberjack
                     .e("Intent action is not %s",
                             com.twofortyfouram.locale.api.Intent.ACTION_QUERY_CONDITION); //$NON-NLS-1$
-            setResultCode(RESULT_CONDITION_UNKNOWN);
+            setResultCode(com.twofortyfouram.locale.api.Intent.RESULT_CONDITION_UNKNOWN);
             return;
         }
         /*
@@ -108,7 +104,7 @@ public abstract class AbstractPluginConditionReceiver extends AbstractAsyncRecei
         if (!new ComponentName(context, this.getClass().getName()).equals(intent
                 .getComponent())) {
             Lumberjack.e("Intent is not explicit"); //$NON-NLS-1$
-            setResultCode(RESULT_CONDITION_UNKNOWN);
+            setResultCode(com.twofortyfouram.locale.api.Intent.RESULT_CONDITION_UNKNOWN);
             abortBroadcast();
             return;
         }
@@ -122,14 +118,14 @@ public abstract class AbstractPluginConditionReceiver extends AbstractAsyncRecei
         if (null == bundle) {
             Lumberjack.e("%s is missing",
                     com.twofortyfouram.locale.api.Intent.EXTRA_BUNDLE); //$NON-NLS-1$
-            setResultCode(RESULT_CONDITION_UNKNOWN);
+            setResultCode(com.twofortyfouram.locale.api.Intent.RESULT_CONDITION_UNKNOWN);
             return;
         }
 
         if (!isBundleValid(bundle)) {
             Lumberjack.e("%s is invalid",
                     com.twofortyfouram.locale.api.Intent.EXTRA_BUNDLE); //$NON-NLS-1$
-            setResultCode(RESULT_CONDITION_UNKNOWN);
+            setResultCode(com.twofortyfouram.locale.api.Intent.RESULT_CONDITION_UNKNOWN);
             return;
         }
 
@@ -166,18 +162,18 @@ public abstract class AbstractPluginConditionReceiver extends AbstractAsyncRecei
      * @throws AssertionError if {@code result} is not one of the three
      *                        acceptable values.
      */
-    @VisibleForTesting(otherwise = VisibleForTesting.PROTECTED)
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     /* package */ static void assertResult(final int result) {
         if (com.twofortyfouram.locale.api.Intent.RESULT_CONDITION_SATISFIED != result
                 && com.twofortyfouram.locale.api.Intent.RESULT_CONDITION_UNSATISFIED != result
-                && RESULT_CONDITION_UNKNOWN != result) {
+                && com.twofortyfouram.locale.api.Intent.RESULT_CONDITION_UNKNOWN != result) {
             throw new AssertionError(
                     Lumberjack
                             .formatMessage(
                                     "result=%d is not one of [%d, %d, %d]", result, //$NON-NLS-1$
                                     com.twofortyfouram.locale.api.Intent.RESULT_CONDITION_SATISFIED,
                                     com.twofortyfouram.locale.api.Intent.RESULT_CONDITION_UNSATISFIED,
-                                    RESULT_CONDITION_UNKNOWN)
+                                    com.twofortyfouram.locale.api.Intent.RESULT_CONDITION_UNKNOWN)
             );
         }
     }
@@ -246,7 +242,7 @@ public abstract class AbstractPluginConditionReceiver extends AbstractAsyncRecei
     @ConditionResult
     protected int getPluginConditionResult(@NonNull final Context context,
                                                 @NonNull final Intent intent,
-                                                @NonNull final Bundle bundle) {
+                                                    @NonNull final Bundle bundle) {
         return getPluginConditionResult(context, bundle);
     }
 
@@ -279,11 +275,12 @@ public abstract class AbstractPluginConditionReceiver extends AbstractAsyncRecei
      */
     @ConditionResult
     protected int getPluginConditionResult(@NonNull final Context context,
-                                                    @NonNull final Bundle bundle) {
-        return RESULT_CONDITION_UNKNOWN;
+                                                @NonNull final Bundle bundle) {
+        return com.twofortyfouram.locale.api.Intent.RESULT_CONDITION_UNKNOWN;
     }
 
-    @IntDef({com.twofortyfouram.locale.api.Intent.RESULT_CONDITION_SATISFIED, RESULT_CONDITION_UNKNOWN, com.twofortyfouram.locale.api.Intent
+    @IntDef({com.twofortyfouram.locale.api.Intent.RESULT_CONDITION_SATISFIED, com.twofortyfouram
+            .locale.api.Intent.RESULT_CONDITION_UNKNOWN, com.twofortyfouram.locale.api.Intent
             .RESULT_CONDITION_UNSATISFIED})
     @Retention(RetentionPolicy.SOURCE)
     public @interface ConditionResult {
